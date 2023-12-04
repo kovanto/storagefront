@@ -31,6 +31,7 @@
 <script>
 
 import ErrorAlert from "@/components/alert/ErrorAlert.vue";
+import router from "@/router";
 
 export default {
   name: "LoginView.vue",
@@ -44,6 +45,10 @@ export default {
       loginResponse: {
         userId: 0,
         roleName: ''
+      },
+      errorResponse: {
+        message: '',
+        errorCode: 0
       }
     }
   },
@@ -66,10 +71,12 @@ export default {
       ).then(response => {
         this.loginResponse = response.data
         this.handleSuccessfulLogin();
-      }) //.catch(error => {
-      //this.handleUnsuccessfulLogin(error);
+      }).catch(error => {
+            this.handleUnsuccessfulLogin(error)
+          }
+      )
     },
-    //);
+
     handleSuccessfulLogin() {
       sessionStorage.setItem('userId', this.loginResponse.userId)
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
@@ -81,6 +88,20 @@ export default {
 
     handleRequiredFieldsAlert() {
       this.errorMessage = 'Täida kõik väljad'
+    },
+
+    resetErrorMessage() {
+      this.errorMessage = '';
+    },
+
+    handleUnsuccessfulLogin(error) {
+      this.errorResponse = error.response.data
+      const httpStatusCode = error.response.status
+      if (httpStatusCode === 403 & this.errorResponse.errorCode === 111) {
+        this.errorMessage = this.errorResponse.message;
+      } else {
+        router.push({name: 'errorRoute'})
+      }
     },
   },
 
