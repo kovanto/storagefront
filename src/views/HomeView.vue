@@ -14,7 +14,8 @@
           Platvorm sobib nii ettevõtetele kui eraisikutele, kes soovivad rendipinda leida või pakkuda.
         </i></div>
         <div class="col col-8">
-          <img src="../assets/happyfamily.jpeg" class="img-fluid" /></div>
+          <img src="../assets/happyfamily.jpeg" class="img-fluid" />
+        </div>
       </div>
     </div>
 
