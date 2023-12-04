@@ -5,7 +5,7 @@
         <div class="col col-6">
           <div class="input-group mb-3">
             <span class="input-group-text">E-maili aadress</span>
-            <input v-model="username" type="text" class="form-control">
+            <input v-model="email" type="text" class="form-control">
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text">parool</span>
@@ -48,11 +48,16 @@ export default {
           }
       ).then(response => {
         this.loginResponse = response.data
-        // this.handleSuccessfulLogin();
+        this.handleSuccessfulLogin();
       }) //.catch(error => {
-        //this.handleUnsuccessfulLogin(error);
-      } //);
+      //this.handleUnsuccessfulLogin(error);
     },
+    //);
+    handleSuccessfulLogin() {
+      sessionStorage.setItem('userId', this.loginResponse.userId)
+      sessionStorage.setItem('roleName', this.loginResponse.roleName)
+    },
+  },
 
-  }
+}
 </script>
