@@ -1,5 +1,12 @@
 <template>
   <div>
+    <div class="container text-center" @keydown.enter="login">
+      <div class="row justify-content-center">
+        <div class="col col-6">
+          <ErrorAlert :error-message="errorMessage"/>
+        </div>
+      </div>
+    </div>
     <div class="container text-center">
       <div class="row justify-content-center">
         <div class="col col-6">
@@ -11,7 +18,7 @@
             <span class="input-group-text">parool</span>
             <input v-model="password" type="password" class="form-control">
           </div>
-          <button @click="sendLoginRequest" type="submit" class="btn btn-primary">Logi sisse</button>
+          <button @click="login" type="submit" class="btn btn-primary">Logi sisse</button>
         </div>
 
       </div>
@@ -23,13 +30,15 @@
 
 <script>
 
-import router from "@/router";
+import ErrorAlert from "@/components/alert/ErrorAlert.vue";
 
 export default {
   name: "LoginView.vue",
+  components: {ErrorAlert},
 
   data() {
     return {
+      errorMessage: '',
       email: '',
       password: '',
       loginResponse: {
@@ -39,6 +48,14 @@ export default {
     }
   },
   methods: {
+    login() {
+      if (this.allRequiredFieldsAreFilled()) {
+        this.sendLoginRequest();
+      } else {
+        this.handleRequiredFieldsAlert()
+      }
+    },
+
     sendLoginRequest() {
       this.$http.get("/login", {
             params: {
@@ -56,6 +73,14 @@ export default {
     handleSuccessfulLogin() {
       sessionStorage.setItem('userId', this.loginResponse.userId)
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
+    },
+
+    allRequiredFieldsAreFilled() {
+      return this.email.length > 0 && this.password.length > 0
+    },
+
+    handleRequiredFieldsAlert() {
+      this.errorMessage = 'Täida kõik väljad'
     },
   },
 
