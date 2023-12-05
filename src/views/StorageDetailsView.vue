@@ -13,14 +13,7 @@
       </div>
 
       <div class="col col-6">
-
-        <table>
-
-
-        </table>
-
-
-        <class="row">
+        <div class="row">
           Maakond
         </div>
         <div class="row">
@@ -62,8 +55,6 @@ export default {
   }
 
 }
-
-getStorageId()
 
 
 </script>
