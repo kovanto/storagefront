@@ -3,6 +3,9 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from "@/views/LoginView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import ErrorView from "@/views/ErrorView.vue";
+import LocationDetailView from "@/views/StorageDetailsView.vue";
+import LocationDetailsView from "@/views/StorageDetailsView.vue";
+import StorageDetailsView from "@/views/StorageDetailsView.vue";
 
 const routes = [
   {
@@ -27,6 +30,11 @@ const routes = [
     name: 'errorRoute',
     component: ErrorView
 
+  },
+  {
+    path: '/storagedetails',
+    name: 'storageDetailsRoute',
+    component: StorageDetailsView
   },
 ]
 
