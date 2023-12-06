@@ -1,6 +1,7 @@
 <template>
   <nav>
     <router-link to="/">Avaleht</router-link> |
+    <router-link to="/alllocations">Pakkumised</router-link> |
     <router-link to="/profile">Registreeri</router-link> |
     <router-link to="/login">Logi sisse</router-link>
   </nav>

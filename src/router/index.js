@@ -6,6 +6,7 @@ import ErrorView from "@/views/ErrorView.vue";
 import LocationDetailView from "@/views/StorageDetailsView.vue";
 import LocationDetailsView from "@/views/StorageDetailsView.vue";
 import StorageDetailsView from "@/views/StorageDetailsView.vue";
+import AllLocationsView from "@/views/AllLocationsView.vue";
 
 const routes = [
   {
@@ -29,6 +30,12 @@ const routes = [
     path: '/error',
     name: 'errorRoute',
     component: ErrorView
+
+  },
+  {
+    path: '/alllocations',
+    name: 'alllocationsRoute',
+    component: AllLocationsView
 
   },
   {

@@ -1,9 +1,7 @@
 
 <template>
 
-
-
-  <img v-if="imageDataBase64 === '' || imageDataBase64 === null" src="@/assets/img_placeholder.jpg" class="img-thumbnail"/>
+  <img v-if="imageDataBase64 === '' || imageDataBase64 === null" src="../../assets/StorageStandard.jpeg" class="img-thumbnail"/>
   <img v-else :src="imageDataBase64" class="img-thumbnail">
 </template>
 
