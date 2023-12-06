@@ -83,16 +83,6 @@ export default {
 
     }
   },
-
-  methods: {
-    getAndSetIsEditable () {
-
-    },
-  },
-  mounted () {
-    this.getAndSetIsEditable()
-  }
 }
-
 
 </script>
