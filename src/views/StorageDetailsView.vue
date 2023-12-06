@@ -11,7 +11,7 @@
     <div class="row">
       <div class="col col-3">
         <!--siia tuleb eraldi komponent "StorageImage.vue"-->
-        <img src="@\assets\img_placeholder.jpg" class="img-thumbnail">
+        <img src="@\assets\img_placeholder.jpg" alt="image placeholder" class="img-thumbnail">
       </div>
 
       <StorageDetailsInfoTable/>
