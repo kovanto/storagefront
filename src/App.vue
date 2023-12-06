@@ -1,9 +1,15 @@
 <template>
   <nav>
-    <router-link to="/">Avaleht</router-link> |
-    <router-link to="/alllocations">Pakkumised</router-link> |
-    <router-link to="/profile">Registreeri</router-link> |
+    <router-link to="/profile" class="text-end">Minu profiil</router-link>
+    <br>
+    <router-link to="/">Avaleht</router-link>
+    |
+    <router-link to="/alllocations">Pakkumised</router-link>
+    |
+    <router-link to="/profile">Registreeri</router-link>
+    |
     <router-link to="/login">Logi sisse</router-link>
+
   </nav>
   <router-view/>
 </template>
@@ -31,3 +37,5 @@ nav a.router-link-exact-active {
 }
 </style>
 
+<script setup>
+</script>
