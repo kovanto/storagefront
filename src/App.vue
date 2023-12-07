@@ -1,9 +1,20 @@
 <template>
   <nav>
-    <router-link to="/">Avaleht</router-link> |
-    <router-link to="/alllocations">Pakkumised</router-link> |
-    <router-link to="/profile">Registreeri</router-link> |
+    <div class="float-end" >
+    <router-link to="/profile" style="font-size: small">
+      <font-awesome-icon :icon="['far', 'user']" /> Minu profiil</router-link>
+
+    </div>
+    <br>
+
+    <router-link to="/">Avaleht</router-link>
+    |
+    <router-link to="/alllocations">Vaata pakkumisi</router-link>
+    |
+    <router-link to="/profile">Registreeri uus kasutaja</router-link>
+    |
     <router-link to="/login">Logi sisse</router-link>
+
   </nav>
   <router-view/>
 </template>
@@ -31,3 +42,5 @@ nav a.router-link-exact-active {
 }
 </style>
 
+<script setup>
+</script>

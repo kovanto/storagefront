@@ -1,7 +1,7 @@
 <template>
   <select class="form-select" aria-label="Maakond">
     <option selected value="0">Vali maakond</option>
-    <option value="1">One</option>
+    <option v-for="county in counties" :key="county.countyId" :value="county.countyId">{{county.countyName}}</option>
 
   </select>
 </template>
@@ -21,6 +21,20 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+      getCounties() {
+        this.$http.get("/location/counties")
+            .then(response => {
+              this.counties = response.data
+            })
+            .catch(error => {
+              const errorResponseBody = error.response.data
+            })
+      },
+    },
+  mounted() {
+    this.getCounties()
   }
 }
 </script>
