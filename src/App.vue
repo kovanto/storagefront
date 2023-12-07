@@ -1,12 +1,17 @@
 <template>
   <nav>
-    <router-link to="/profile" class="text-end">Minu profiil</router-link>
+    <div class="float-end" >
+    <router-link to="/profile" style="font-size: small">
+      <font-awesome-icon :icon="['far', 'user']" /> Minu profiil</router-link>
+
+    </div>
     <br>
+
     <router-link to="/">Avaleht</router-link>
     |
-    <router-link to="/alllocations">Pakkumised</router-link>
+    <router-link to="/alllocations">Vaata pakkumisi</router-link>
     |
-    <router-link to="/profile">Registreeri</router-link>
+    <router-link to="/profile">Registreeri uus kasutaja</router-link>
     |
     <router-link to="/login">Logi sisse</router-link>
 

@@ -55,6 +55,7 @@ export default {
 
     closeFilterModal() {
       this.isOpen = false
+
     },
 
   },
