@@ -39,7 +39,7 @@ methods: {
           this.counties = response.data
         })
         .catch(error => {
-          const errorResponseBody = error.response.data
+          //const errorResponseBody = error.response.data
         })
   },
 
