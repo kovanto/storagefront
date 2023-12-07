@@ -12,6 +12,11 @@
       <div class="col col-3">
         <!--siia tuleb eraldi komponent "StorageImage.vue"-->
         <img src="@\assets\img_placeholder.jpg" alt="image placeholder" class="img-thumbnail">
+
+        <div v-if="isEditable">
+          <ImageInput/>
+        </div>
+
       </div>
 
       <StorageDetailsInfoTable :editable="isEditable"/>
@@ -26,7 +31,7 @@
     <br>
 
     <div>
-      <a v-if="isLoggedIn && isSeller||isAdmin" class="btn btn-primary">Salvesta</a>
+      <a v-if="isEditable" class="btn btn-primary">Salvesta</a>
       <div v-else-if="isLoggedIn">
         Algus: <input type="date" class="">
         Lõpp: <input type="date" class="m-2">
@@ -42,11 +47,12 @@
 <script>
 
 import StorageDetailsInfoTable from "@/components/StorageDetailsInfoTable.vue";
+import ImageInput from "@/views/ImageInput.vue";
 
 export default {
   name: "StorageDetailsView",
 
-  components: {StorageDetailsInfoTable},
+  components: {ImageInput, StorageDetailsInfoTable},
 
   data () {
     return {
@@ -57,7 +63,8 @@ export default {
       storageName: 'Kohalik ladu 10',
       storageDescription: "Täpsustav kirjeldus ja muu lisainfo",
       startDate: '',
-      endDate: ''
+      endDate: '',
+
     }
   },
 
@@ -70,22 +77,24 @@ export default {
     getAndSetIsSeller () {
       const roleName = sessionStorage.getItem('roleName')
       this.isSeller = roleName === 'seller'
-      this.isEditable = this.isSeller
     },
 
     getAndSetIsAdmin () {
       const roleName = sessionStorage.getItem('roleName')
       this.isAdmin = roleName === 'admin'
-      this.isEditable = this.isAdmin
-
-
+    },
+    getAndSetEditable () {
+      const roleName = sessionStorage.getItem('roleName')
+      this.isEditable = roleName === 'seller' || roleName === 'admin'
     },
   },
+
 
   mounted () {
     this.getAndSetIsLoggedIn()
     this.getAndSetIsSeller()
     this.getAndSetIsAdmin()
+    this.getAndSetEditable()
   },
 }
 
