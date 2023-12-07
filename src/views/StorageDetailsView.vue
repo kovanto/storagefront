@@ -14,7 +14,7 @@
         <img src="@\assets\img_placeholder.jpg" alt="image placeholder" class="img-thumbnail">
       </div>
 
-      <StorageDetailsInfoTable/>
+      <StorageDetailsInfoTable :editable="isEditable"/>
 
     </div>
     <br>
@@ -37,7 +37,6 @@
     </div>
   </div>
 
-
 </template>
 
 <script>
@@ -46,6 +45,7 @@ import StorageDetailsInfoTable from "@/components/StorageDetailsInfoTable.vue";
 
 export default {
   name: "StorageDetailsView",
+
   components: {StorageDetailsInfoTable},
 
   data () {
@@ -53,7 +53,7 @@ export default {
       isLoggedIn: false,
       isAdmin: false,
       isSeller: false,
-
+      isEditable: false,
       storageName: 'Kohalik ladu 10',
       storageDescription: "Täpsustav kirjeldus ja muu lisainfo",
       startDate: '',
@@ -70,18 +70,23 @@ export default {
     getAndSetIsSeller () {
       const roleName = sessionStorage.getItem('roleName')
       this.isSeller = roleName === 'seller'
+      this.isEditable = this.isSeller
     },
+
     getAndSetIsAdmin () {
       const roleName = sessionStorage.getItem('roleName')
       this.isAdmin = roleName === 'admin'
-    }
+      this.isEditable = this.isAdmin
+
+
+    },
   },
+
   mounted () {
     this.getAndSetIsLoggedIn()
     this.getAndSetIsSeller()
     this.getAndSetIsAdmin()
   },
-
 }
 
 </script>
