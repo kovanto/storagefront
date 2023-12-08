@@ -72,27 +72,17 @@ import StorageTypeDropdown from "@/components/StorageTypeDropdown.vue";
 
 export default {
   name: 'StorageDetailsInfoTable',
-  components: {StorageTypeDropdown, CountiesDropdown: CountiesDropdown},
+  props: {
+    editable: {}
+  },
+  components: {StorageTypeDropdown, CountiesDropdown},
 
   data () {
     return {
       storageID: 0,
       countyName: '',
-      editable: false,
-
 
     }
   },
-
-  methods: {
-    getAndSetIsEditable () {
-
-    },
-  },
-  mounted () {
-    this.getAndSetIsEditable()
-  }
 }
-
-
 </script>
