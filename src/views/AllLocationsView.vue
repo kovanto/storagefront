@@ -1,5 +1,6 @@
 <template>
-  <FilterModal ref="filterModalRef"/>
+  <ErrorAlert :error-message="errorMessage"/>
+  <FilterModal ref="filterModalRef" @event-county-id-and-features-filter-applied="getFilteredStorageLocations"/>
   <div>
     <h1>Pakutavad rendipinnad</h1>
     <div class="container text-center">
@@ -11,11 +12,12 @@
       </div>
     </div>
 
-      <div class="contents" v-for="storageInfo in storageInfos" >
-        <img @click="navigateToStorageDetailsView(storageInfo.storageId)" :src="storageInfo.imageData" class="img-fluid img-thumbnail" width="400">
-        <div @click="navigateToStorageDetailsView(storageInfo.storageId)">{{ storageInfo.storageName}}</div>
-        <div> {{ storageInfo.storagePrice + " €/kuu" }}</div>
-      </div>
+    <div class="contents" v-for="storageInfo in storageInfos">
+      <img @click="navigateToStorageDetailsView(storageInfo.storageId)" :src="storageInfo.imageData"
+           class="img-fluid img-thumbnail" width="400">
+      <div @click="navigateToStorageDetailsView(storageInfo.storageId)">{{ storageInfo.storageName }}</div>
+      <div> {{ storageInfo.storagePrice + " €/kuu" }}</div>
+    </div>
   </div>
 
 </template>
@@ -24,13 +26,16 @@
 import router from "@/router";
 import FilterModal from "@/components/modal/FilterModal.vue";
 import FeatureTypesCheckbox from "@/components/FeatureTypesCheckbox.vue";
+import countiesDropdown from "@/components/CountiesDropdown.vue";
+import ErrorAlert from "@/components/alert/ErrorAlert.vue";
 
 export default {
   name: "AllLocationsView",
-  components: {FeatureTypesCheckbox, FilterModal},
+  components: {ErrorAlert, FeatureTypesCheckbox, FilterModal},
 
   data() {
     return {
+      errorMessage: '',
       storageInfos: [
         {
           storageId: 0,
@@ -45,7 +50,11 @@ export default {
           featureName: '',
           isAvailable: false
         }
-      ]
+      ],
+      errorResponse: {
+        message: '',
+        errorCode: 0
+      },
     }
   },
 
@@ -71,13 +80,40 @@ export default {
     getFeatureTypes() {
       this.$http.get("/storage/features")
           .then(response => {
-            this.featureTypes = response.data
+            this.featureTypes = response.data;
+            this.setAllFeatureTypesAvailable();
+
           })
           .catch(error => {
             router.push({name: 'errorRoute'})
           })
-    }
+    },
 
+    setAllFeatureTypesAvailable: function () {
+      for (let i = 0; i < this.featureTypes.length; i++) {
+        this.featureTypes[i].isAvailable = true
+      }
+    },
+
+
+    getFilteredStorageLocations(filteredStorageRequest) {
+      this.$http.post("/locations/filtered", filteredStorageRequest
+      ).then(response => {
+        this.storageInfos = response.data
+      }).catch(error => {
+        this.handleStoragesNotFound(error)
+      })
+    },
+  },
+
+  handleStoragesNotFound(error) {
+    this.errorResponse = error.response.data
+    const httpStatusCode = error.response.status
+    if (httpStatusCode === 403 & this.errorResponse.errorCode === 222) {
+      this.errorMessage = this.errorResponse.message;
+    } else {
+      router.push({name: 'errorRoute'})
+    }
   },
 
   mounted() {

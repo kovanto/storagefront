@@ -1,7 +1,7 @@
 <template>
-  <select class="form-select" aria-label="Maakond">
+  <select v-model="selectedCountyId" class="form-select" aria-label="Maakond">
     <option selected value="0">Vali maakond</option>
-    <option v-for="county in counties" :key="county.countyId" :value="county.countyId">{{county.countyName}}</option>
+    <option v-for="county in counties" :key="county.countyId" :value="county.countyId">{{ county.countyName }}</option>
 
   </select>
 </template>
@@ -11,8 +11,8 @@
 export default {
   name: 'CountiesDropdown',
 
-  data(){
-    return{
+  data() {
+    return {
       selectedCountyId: 0,
       counties: [
         {
@@ -23,16 +23,16 @@ export default {
     }
   },
   methods: {
-      getCounties() {
-        this.$http.get("/location/counties")
-            .then(response => {
-              this.counties = response.data
-            })
-            .catch(error => {
-              const errorResponseBody = error.response.data
-            })
-      },
+    getCounties() {
+      this.$http.get("/location/counties")
+          .then(response => {
+            this.counties = response.data
+          })
+          .catch(error => {
+            const errorResponseBody = error.response.data
+          })
     },
+  },
   mounted() {
     this.getCounties()
   }
