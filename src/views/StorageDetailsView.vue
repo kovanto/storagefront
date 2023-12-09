@@ -1,8 +1,9 @@
 <template>
+
   <div class="container">
     <div class="row justify-content-center">
       <div class="col col-8">
-        <h1>{{ storageName }}</h1>
+        <h1>{{ storageDetails.storageName }}</h1>
         <br>
         <br>
       </div>
@@ -25,7 +26,7 @@
     <br>
     <br>
     <div class="row justify-content-center">
-      {{ storageDescription }}
+      {{ storageDetails.description }}
     </div>
     <br>
     <br>
@@ -49,9 +50,10 @@
 import StorageDetailsInfoTable from "@/components/StorageDetailsInfoTable.vue";
 import ImageInput from "@/views/ImageInput.vue";
 
-export default {
-  name: "StorageDetailsView",
 
+export default {
+
+  name: 'StorageDetailsView',
   components: {ImageInput, StorageDetailsInfoTable},
 
   data () {
@@ -60,8 +62,26 @@ export default {
       isAdmin: false,
       isSeller: false,
       isEditable: false,
-      storageName: 'Kohalik ladu 10',
-      storageDescription: "Täpsustav kirjeldus ja muu lisainfo",
+      storageId: null,
+      storageDetails: {
+        countyId: 0,
+        typeId: 0,
+        storageName: '',
+        longitude: 0,
+        latitude: 0,
+        squareMeters: 0,
+        price: 0,
+        description: '',
+        imageData: 'string',
+        featureInfos: [
+          {
+            featureId: 0,
+            featureName: 'string',
+            isAvailable: true
+          }
+        ]
+      },
+
       startDate: '',
       endDate: '',
 
@@ -69,6 +89,23 @@ export default {
   },
 
   methods: {
+
+    getStorageDetails () {
+      this.$http.get('/storage', {
+            params: {
+              storageId: this.storageId
+            }
+          }
+      )
+          .then(response => {
+            this.storageDetails = response.data
+          }).catch(error => {
+        //router.push({name: 'errorRoute'})
+      })
+
+    },
+
+
     getAndSetIsLoggedIn () {
       const userId = sessionStorage.getItem('userId')
       this.isLoggedIn = userId !== null
@@ -88,14 +125,20 @@ export default {
       this.isEditable = roleName === 'seller' || roleName === 'admin'
     },
   },
-
+  created() {
+    const queryParams = new URLSearchParams(window.location.search);
+    this.storageId = queryParams.get('storageId') || null;
+  },
 
   mounted () {
     this.getAndSetIsLoggedIn()
     this.getAndSetIsSeller()
     this.getAndSetIsAdmin()
     this.getAndSetEditable()
+    this.getStorageDetails()
   },
+
 }
+
 
 </script>
