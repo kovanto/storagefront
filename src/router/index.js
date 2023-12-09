@@ -39,9 +39,10 @@ const routes = [
 
   },
   {
-    path: '/storagedetails',
+    path: '/storage',
     name: 'storageDetailsRoute',
-    component: StorageDetailsView
+    component: StorageDetailsView,
+
   },
 ]
 
