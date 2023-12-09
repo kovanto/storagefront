@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import router from "@/router";
+
 import StorageDetailsInfoTable from "@/components/StorageDetailsInfoTable.vue";
 import ImageInput from "@/views/ImageInput.vue";
 
@@ -134,7 +134,7 @@ export default {
     this.getAndSetIsLoggedIn()
     this.getAndSetIsSeller()
     this.getAndSetIsAdmin()
-    //this.getAndSetEditable()
+    this.getAndSetEditable()
     this.getStorageDetails()
   },
 
