@@ -80,7 +80,8 @@ export default {
     handleSuccessfulLogin() {
       sessionStorage.setItem('userId', this.loginResponse.userId)
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
-      router.push({name: 'alllocationsRoute'});
+      this.$emit('event-update-nav-menu')
+      router.push({name: 'allLocationsRoute'});
     },
 
     allRequiredFieldsAreFilled() {

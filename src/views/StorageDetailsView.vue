@@ -47,7 +47,7 @@
 <script>
 
 import StorageDetailsInfoTable from "@/components/StorageDetailsInfoTable.vue";
-import ImageInput from "@/views/ImageInput.vue";
+import ImageInput from "@/components/ImageInput.vue";
 
 export default {
   name: "StorageDetailsView",

@@ -14,7 +14,6 @@
         <button @click="createNewUser" type="submit" class="btn btn-primary">Registreeri uus kasutaja</button>
       </div>
     </div>
-
   </div>
 </template>
 

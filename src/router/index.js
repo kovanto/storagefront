@@ -5,6 +5,8 @@ import ProfileView from "@/views/ProfileView.vue";
 import ErrorView from "@/views/ErrorView.vue";
 import StorageDetailsView from "@/views/StorageDetailsView.vue";
 import AllLocationsView from "@/views/AllLocationsView.vue";
+import MyStoragesView from "@/views/MyStoragesView.vue";
+import MyOrdersView from "@/views/MyOrdersView.vue";
 
 const routes = [
   {
@@ -32,7 +34,7 @@ const routes = [
   },
   {
     path: '/alllocations',
-    name: 'alllocationsRoute',
+    name: 'allLocationsRoute',
     component: AllLocationsView
 
   },
@@ -40,6 +42,16 @@ const routes = [
     path: '/storagedetails',
     name: 'storageDetailsRoute',
     component: StorageDetailsView
+  },
+  {
+    path: '/mystorages',
+    name: 'myStoragesRoute',
+    component: MyStoragesView
+  },
+  {
+    path: '/myorders',
+    name: 'myOrdersRoute',
+    component: MyOrdersView
   },
 ]
 
