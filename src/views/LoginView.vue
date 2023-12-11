@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="container text-center" @keydown.enter="login">
+  <div @keydown.enter="login">
+    <div class="container text-center" >
       <div class="row justify-content-center">
         <div class="col col-6">
           <ErrorAlert :error-message="errorMessage"/>
@@ -80,7 +80,7 @@ export default {
     handleSuccessfulLogin() {
       sessionStorage.setItem('userId', this.loginResponse.userId)
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
-      this.$emit('event-update-nav-menu')
+      this.$emit('event-update-nav-menu', Number(this.loginResponse.userId))
       router.push({name: 'allLocationsRoute'});
     },
 

@@ -5,8 +5,8 @@ import ProfileView from "@/views/ProfileView.vue";
 import ErrorView from "@/views/ErrorView.vue";
 import StorageDetailsView from "@/views/StorageDetailsView.vue";
 import AllLocationsView from "@/views/AllLocationsView.vue";
-import MyStoragesView from "@/views/MyStoragesView.vue";
 import MyOrdersView from "@/views/MyOrdersView.vue";
+import MyStoragesView from "@/views/MyStoragesView.vue";
 
 const routes = [
   {

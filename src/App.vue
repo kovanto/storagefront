@@ -1,5 +1,6 @@
 <template>
   <LogOutModal ref="logOutModalRef" @event-execute-logout="executeLogOut"/>
+  <MyStoragesView :user-id="userId"></MyStoragesView>
   <div v-if="isLoggedIn" class="float-end" >
     <router-link to="/myprofile" style="font-size: small">
       <font-awesome-icon :icon="['far', 'user']" /> Minu profiil</router-link>
@@ -23,6 +24,7 @@ import router from "@/router";
 
 export default {
   components: {LogOutModal},
+
   data() {
     return {
       isLoggedIn: false,
