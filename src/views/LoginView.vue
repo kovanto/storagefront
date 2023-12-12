@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="container text-center" @keydown.enter="login">
+  <div @keydown.enter="login">
+    <div class="container text-center" >
       <div class="row justify-content-center">
         <div class="col col-6">
           <ErrorAlert :error-message="errorMessage"/>
@@ -18,7 +18,7 @@
             <span class="input-group-text">parool</span>
             <input v-model="password" type="password" class="form-control">
           </div>
-          <button @click="login" type="submit" class="btn btn-primary">Logi sisse</button>
+          <button @click="login" type="submit" class="btn btn-outline-dark">Logi sisse</button>
         </div>
 
       </div>
@@ -80,7 +80,8 @@ export default {
     handleSuccessfulLogin() {
       sessionStorage.setItem('userId', this.loginResponse.userId)
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
-      router.push({name: 'alllocationsRoute'});
+      this.$emit('event-update-nav-menu', Number(this.loginResponse.userId))
+      router.push({name: 'allLocationsRoute'});
     },
 
     allRequiredFieldsAreFilled() {

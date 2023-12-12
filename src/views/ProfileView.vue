@@ -2,7 +2,7 @@
   <div class="container text-center">
     <SuccessAlert :success-message="successMessage"/>
     <ErrorAlert :error-message="errorMessage"/>
-    <div>
+    <div v-if="!isEdit">
       <UserRoleSelection ref="userRoleSelectionRef"/>
     </div>
     <div>
@@ -11,10 +11,12 @@
     <PasswordInput ref="passwordInputRef"/>
     <div class="row justify-content-center">
       <div class="col col-6">
-        <button @click="createNewUser" type="submit" class="btn btn-primary">Registreeri uus kasutaja</button>
+        <button v-if="!isEdit" @click="createNewUser" type="submit" class="btn btn-outline-dark">Registreeri uus
+          kasutaja
+        </button>
+        <button v-if="isEdit" @click="updateUserProfile" type="submit" class="btn btn-outline-dark">Uuenda andmeid</button>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -25,6 +27,7 @@ import UserNameAndEmailInput from "@/components/UserProfile/UserNameAndEmailInpu
 import PasswordInput from "@/components/UserProfile/PasswordInput.vue";
 import SuccessAlert from "@/components/alert/SuccessAlert.vue";
 import ErrorAlert from "@/components/alert/ErrorAlert.vue";
+import {useRoute} from "vue-router";
 
 export default {
   name: "ProfileView",
@@ -32,7 +35,9 @@ export default {
 
   data() {
     return {
-      userInfo: {
+      userId: 0,
+      isEdit: useRoute().query.isEdit,
+      profileInfo: {
         roleId: 0,
         firstName: '',
         lastName: '',
@@ -60,15 +65,15 @@ export default {
       }
     },
 
-    getAndSetUserInfo: function () {
-      this.userInfo.roleId = this.$refs.userRoleSelectionRef.roleId
-      this.userInfo.firstName = this.$refs.userNameAndEmailInputRef.firstName
-      this.userInfo.lastName = this.$refs.userNameAndEmailInputRef.lastName
-      this.userInfo.email = this.$refs.userNameAndEmailInputRef.email
-      this.userInfo.password = this.$refs.passwordInputRef.password
+    getAndSetUserInfo() {
+      this.profileInfo.roleId = this.$refs.userRoleSelectionRef.roleId
+      this.profileInfo.firstName = this.$refs.userNameAndEmailInputRef.firstName
+      this.profileInfo.lastName = this.$refs.userNameAndEmailInputRef.lastName
+      this.profileInfo.email = this.$refs.userNameAndEmailInputRef.email
+      this.profileInfo.password = this.$refs.passwordInputRef.password
     },
 
-    validatePasswordMatch: function () {
+    validatePasswordMatch() {
       if (this.$refs.passwordInputRef.password === this.$refs.passwordInputRef.passwordCheck) {
         this.postNewUserInfo();
       } else {
@@ -77,9 +82,9 @@ export default {
     },
 
     postNewUserInfo() {
-      this.$http.post("/register", this.userInfo
+      this.$http.post("/register", this.profileInfo
       ).then(response => {
-        this.successMessage = 'Uus kasutaja "' + this.userInfo.firstName + ' ' + this.userInfo.lastName + '" on registreeritud!'
+        this.successMessage = 'Uus kasutaja "' + this.profileInfo.firstName + ' ' + this.profileInfo.lastName + '" on registreeritud!'
       }).catch(error => {
         this.errorResponse = error.response.data
         this.handlePostNewUserError(error.response.status)
@@ -95,11 +100,11 @@ export default {
     },
 
     checkRequiredFieldsAreFilled() {
-      return this.userInfo.firstName.length > 0 &&
-          this.userInfo.lastName.length > 0 &&
-          this.userInfo.email.length > 0 &&
-          this.userInfo.password.length > 0 &&
-          this.userInfo.roleId > 1
+      return this.profileInfo.firstName.length > 0 &&
+          this.profileInfo.lastName.length > 0 &&
+          this.profileInfo.email.length > 0 &&
+          this.profileInfo.password.length > 0 &&
+          this.profileInfo.roleId > 1
     },
 
     handleRequiredFieldsError() {
@@ -111,7 +116,52 @@ export default {
       this.successMessage = ''
     },
 
+    handleIsEdit() {
+      if (this.isEdit === 'true') {
+        this.isEdit = true;
+        this.getProfileInfo()
+      }
+    },
+
+    getProfileInfo() {
+      this.$http.get("/profile", {
+            params: {
+              userId: sessionStorage.getItem('userId')
+            }
+          }
+      ).then(response => {
+        this.profileInfo = response.data
+        this.fillAllFieldsFromProfileInfo()
+      }).catch(error => {
+        const errorResponseBody = error.response.data
+      })
+    },
+
+    updateUserProfile() {
+      this.$http.put("/profile", this.profileInfo, {
+            params: {
+              userId: this.userId,
+            }
+          }
+      ).then(response => {
+        this.successMessage= 'Profiili ' + this.profileInfo.firstName + ' ' + this.profileInfo.lastName + ' andmed on edukalt muudetud'
+      }).catch(error => {
+        const errorResponseBody = error.response.data
+      })
+    },
+
+    fillAllFieldsFromProfileInfo() {
+      this.$refs.userNameAndEmailInputRef.firstName = this.profileInfo.firstName
+      this.$refs.userNameAndEmailInputRef.lastName = this.profileInfo.lastName
+      this.$refs.userNameAndEmailInputRef.email = this.profileInfo.email
+    }
+
+  },
+  mounted() {
+    this.handleIsEdit()
   }
+
+
 }
 </script>
 
