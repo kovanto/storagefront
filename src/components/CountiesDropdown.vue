@@ -1,13 +1,15 @@
 <template>
+
+
+
+
   <select class="form-select" aria-label="Maakond">
-    <option selected value="0">Vali maakond</option>
+    <option v-if="countyDetail.countyId > 0" :key="countyDetail.countyId" :value="countyDetail.countyName"></option>
+
+    <option v-else selected value="0">Vali maakond</option>
     <option v-for="county in counties" :key="county.countyId" :value="county.countyName">
       {{county.countyName}}
     </option>
-
-    <!--<select v-model="selectedCityId" @change="emitSelectedCityId" class="form-select">
-      <option selected value="0">Kõik linnad</option>
-    </select>-->
 
   </select>
 </template>
@@ -16,7 +18,12 @@
 <script>
 export default {
   name: 'CountiesDropdown',
-
+props:{
+  countyDetail: {
+    countyId: 0,
+    countyName:'',
+  }
+},
   data () {
     return {
       selectedCountyId: 0,

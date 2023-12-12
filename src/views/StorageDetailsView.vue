@@ -2,8 +2,13 @@
 
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col col-8">
-        <h1>{{ storageDetails.storageName }}</h1>
+      <div v-if="isEditable" class="col col-8">
+        <input v-model="storageDetails.description" class="form-control" type="text">
+        <br>
+        <br>
+      </div>
+      <div v-else class="col col-8">
+        <h1 >{{ storageDetails.storageName }}</h1>
         <br>
         <br>
       </div>
@@ -13,15 +18,12 @@
       <div class="col col-3">
         <!--siia tuleb eraldi komponent "StorageImage.vue"-->
         <img src="@\assets\img_placeholder.jpg" alt="image placeholder" class="img-thumbnail">
-
         <div v-if="isEditable">
           <ImageInput/>
         </div>
 
       </div>
-
-      <StorageDetailsInfoTable :editable="isEditable"/>
-
+      <StorageDetailsInfoTable :editable="isEditable" :storageDetailedInfo="storageDetails"/>
     </div>
     <br>
     <br>
@@ -120,12 +122,14 @@ export default {
       const roleName = sessionStorage.getItem('roleName')
       this.isAdmin = roleName === 'admin'
     },
+
     getAndSetEditable () {
       const roleName = sessionStorage.getItem('roleName')
       this.isEditable = roleName === 'seller' || roleName === 'admin'
     },
   },
-  created() {
+
+  created () {
     const queryParams = new URLSearchParams(window.location.search);
     this.storageId = queryParams.get('storageId') || null;
   },
@@ -139,6 +143,4 @@ export default {
   },
 
 }
-
-
 </script>

@@ -5,9 +5,9 @@
       <tr>
         <td>Maakond</td>
         <td v-if="editable">
-          <CountiesDropdown/>
+          <CountiesDropdown countyDetail:="storageDetailedInfo.countyId"/>
         </td>
-        <td v-else>{{ countyName }}</td>
+        <td v-else>{{storageDetailedInfo.countyName }}</td>
 
       </tr>
       <tr>
@@ -17,9 +17,12 @@
       <tr>
         <td>Suurus (m2)</td>
         <td v-if="editable">
-          <input class="form-control" type="text" placeholder="sisesta pindala" aria-label="default input example">
+
+          <input v-model="storageDetailedInfo.squareMeters"
+                 class="form-control" type="text"
+                 placeholder="sisesta pindala" aria-label="default input example">
         </td>
-        <td v-else>ruutmeetrid</td>
+        <td v-else>{{storageDetailedInfo.squareMeters}}</td>
       </tr>
       <tr>
         <td>Tüüp</td>
@@ -56,9 +59,10 @@
       <tr>
         <td>Hind ühes kuus (€)</td>
         <td v-if="editable">
-          <input class="form-control" type="text" placeholder="hind eurodes" aria-label="default input example">'
+          <input v-model="storageDetailedInfo.price"
+                 class="form-control" type="text" placeholder="hind eurodes" aria-label="default input example">'
         </td>
-        <td v-else>123</td>
+        <td v-else>{{storageDetailedInfo.price}}</td>
       </tr>
     </table>
 
@@ -73,16 +77,18 @@ import StorageTypeDropdown from "@/components/StorageTypeDropdown.vue";
 export default {
   name: 'StorageDetailsInfoTable',
   props: {
-    editable: {}
+    editable: {},
+    storageDetailedInfo: {},
+
   },
   components: {StorageTypeDropdown, CountiesDropdown},
 
   data () {
     return {
       storageID: 0,
-      countyName: '',
-
+      }
     }
-  },
-}
+  }
+
+
 </script>
