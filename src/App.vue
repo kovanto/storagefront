@@ -2,7 +2,7 @@
   <LogOutModal ref="logOutModalRef" @event-execute-logout="executeLogOut"/>
   <MyStoragesView :user-id="userId"></MyStoragesView>
   <div v-if="isLoggedIn" class="float-end" >
-    <router-link to="/myprofile" style="font-size: small">
+    <router-link :to="{path: '/profile', query: {isEdit: true}}" style="font-size: small">
       <font-awesome-icon :icon="['far', 'user']" /> Minu profiil</router-link>
   </div>
   <nav>
@@ -12,7 +12,8 @@
     <router-link v-if="isLoggedIn&&!isSeller" to="/myorders" class="me-3">Minu broneeringud</router-link>
     <router-link v-if="!isLoggedIn" to="/profile" class="me-3">Registreeri uus kasutaja</router-link>
     <router-link v-if="!isLoggedIn" to="/login" class="me-3">Logi sisse</router-link>
-    <a v-if="isLoggedIn" href="#" class="link-underline-opacity-100-hover cursor-pointer" @click="handleLogOut">Logi välja</a>
+    <a v-if="isLoggedIn" href="#" class="link-underline-opacity-100-hover cursor-pointer" @click="handleLogOut">Logi
+      välja</a>
   </nav>
   <router-view @event-update-nav-menu="updateNavMenu"/>
 </template>
@@ -28,7 +29,8 @@ export default {
   data() {
     return {
       isLoggedIn: false,
-      isSeller: false
+      isSeller: false,
+      userId: 0
     }
   },
 
@@ -50,6 +52,7 @@ export default {
       const roleName = sessionStorage.getItem('roleName')
       this.isSeller = roleName === 'seller'
     },
+
   },
 
   mounted() {
