@@ -27,7 +27,10 @@
     </div>
     <br>
     <br>
-    <div class="row justify-content-center">
+    <div v-if="isEditable">
+      <input class="form-control" type="text" v-model="storageDetails.description">
+    </div>
+    <div v-else class="row justify-content-center">
       {{ storageDetails.description }}
     </div>
     <br>
