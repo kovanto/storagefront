@@ -64,7 +64,7 @@ export default {
     handleIsAddOrUpdateUser() {
       if (useRoute().query.isEdit === 'true') {
         this.isAddUser = false
-        this.isUpdateUser = true;
+        this.isUpdateUser = true
         this.getProfileInfo()
       }
     },
