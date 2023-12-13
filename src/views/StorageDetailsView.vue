@@ -3,12 +3,12 @@
   <div class="container">
     <div class="row justify-content-center">
       <div v-if="isEditable" class="col col-8">
-        <input v-model="storageDetails.description" class="form-control" type="text">
+        <input class="form-control" type="text" v-model="storageDetails.storageName">
         <br>
         <br>
       </div>
       <div v-else class="col col-8">
-        <h1 >{{ storageDetails.storageName }}</h1>
+        <h1>{{ storageDetails.storageName }}</h1>
         <br>
         <br>
       </div>
@@ -23,7 +23,7 @@
         </div>
 
       </div>
-      <StorageDetailsInfoTable :editable="isEditable" :storageDetailedInfo="storageDetails"/>
+      <StorageDetailsInfoTable :editable="isEditable" :storage-details-info="storageDetails"/>
     </div>
     <br>
     <br>
@@ -64,11 +64,14 @@ export default {
       isAdmin: false,
       isSeller: false,
       isEditable: false,
-      storageId: null,
+      storageId: 0,
       storageDetails: {
-        countyId: 0,
-        typeId: 0,
         storageName: '',
+        locationId:0,
+        countyId: 0,
+        countyName: '',
+        typeId: 0,
+        typeName:'',
         longitude: 0,
         latitude: 0,
         squareMeters: 0,

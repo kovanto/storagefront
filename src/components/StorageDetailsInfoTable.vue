@@ -1,35 +1,45 @@
 <template>
   <div class="col col-6">
-
     <table>
       <tr>
         <td>Maakond</td>
         <td v-if="editable">
-          <CountiesDropdown countyDetail:="storageDetailedInfo.countyId"/>
+          <CountiesDropdown :selectedCountyId="storageDetailsInfo.countyId"
+                            @event-selected-county-change="handleCountyChange"/>
         </td>
-        <td v-else>{{storageDetailedInfo.countyName }}</td>
-
+        <td v-else>{{ storageDetailsInfo.countyName }}</td>
       </tr>
       <tr>
-        <td>Asukoht kaardil</td>
-        <td>123</td>
+        <td >
+        <a :href="getMapLink(storageDetailsInfo.latitude, storageDetailsInfo.longitude)" target="_blank">Asukoht kaardil</a>
+        </td>
+
+        <td v-if="editable">
+          <input class="form-control" type="text"
+                 placeholder="latitude"
+                 v-model="storageDetailsInfo.latitude">
+          <input class="form-control" type="text"
+                 placeholder="longitude"
+                 v-model="storageDetailsInfo.longitude">
+        </td>
+        <td v-else>{{ storageDetailsInfo.latitude }} {{ storageDetailsInfo.longitude }}</td>
       </tr>
       <tr>
         <td>Suurus (m2)</td>
         <td v-if="editable">
-
-          <input v-model="storageDetailedInfo.squareMeters"
-                 class="form-control" type="text"
-                 placeholder="sisesta pindala" aria-label="default input example">
+          <input class="form-control" type="text"
+                 placeholder="sisesta pindala"
+                 v-model="storageDetailsInfo.squareMeters">
         </td>
-        <td v-else>{{storageDetailedInfo.squareMeters}}</td>
+        <td v-else>{{ storageDetailsInfo.squareMeters }}</td>
       </tr>
       <tr>
         <td>Tüüp</td>
         <td v-if="editable">
-          <StorageTypeDropdown/>
+          <StorageTypeDropdown :selectedTypeId="storageDetailsInfo.typeId"
+                               @event-selected-type-change="handleTypeChange"/>
         </td>
-        <td v-else>123</td>
+        <td v-else>{{ storageDetailsInfo.typeName }}</td>
       </tr>
       <tr>
         <td>Lisad</td>
@@ -41,28 +51,20 @@
           <input class="form-check-input mx-2" type="checkbox">
           <label class="form-check-label">elekter</label>
         </td>
+        <td v-else>
 
-        <!--
-        all on
-        <div v-for="transactionType in transactionTypes" :key="transactionType.transactionTypeId"
-             class="form-check text-start">
-          <input v-model="transactionType.isAvailable" class="form-check-input" type="checkbox"
-                 :id=" 'transactionTypeId' + transactionType.transactionTypeId">
-          <label class="form-check-label" :for=" 'transactionTypeId' + transactionType.transactionTypeId">
-            {{ transactionType.transactionTypeName }}
-          </label>
-        </div>-->
+          <FeatureTypesCheckbox/>
+        </td>
 
 
-        <td v-else>123</td>
       </tr>
       <tr>
         <td>Hind ühes kuus (€)</td>
         <td v-if="editable">
-          <input v-model="storageDetailedInfo.price"
-                 class="form-control" type="text" placeholder="hind eurodes" aria-label="default input example">'
+          <input v-model="storageDetailsInfo.price"
+                 class="form-control" type="text" placeholder="hind eurodes">'
         </td>
-        <td v-else>{{storageDetailedInfo.price}}</td>
+        <td v-else>{{ storageDetailsInfo.price }}</td>
       </tr>
     </table>
 
@@ -73,22 +75,38 @@
 
 import CountiesDropdown from "@/components/CountiesDropdown.vue";
 import StorageTypeDropdown from "@/components/StorageTypeDropdown.vue";
+import FeatureTypesCheckbox from "@/components/FeatureTypesCheckbox.vue";
 
 export default {
   name: 'StorageDetailsInfoTable',
   props: {
     editable: {},
-    storageDetailedInfo: {},
+    storageDetailsInfo: {}
 
   },
-  components: {StorageTypeDropdown, CountiesDropdown},
+  components: {FeatureTypesCheckbox, StorageTypeDropdown, CountiesDropdown},
 
   data () {
     return {
-      storageID: 0,
-      }
+      storageDetailedInfo: {}
     }
+  },
+  methods: {
+
+    handleTypeChange (newTypeId) {
+      this.storageDetailedInfo.typeId = newTypeId;
+      //emit to StorageDetailsView
+    },
+    handleCountyChange (newCountyId) {
+      this.storageDetailedInfo.countyId = newCountyId;
+  //emit to StorageDetailsView
+    },
+    getMapLink(latitude, longitude) {
+
+      return `https://www.google.com/maps?q=${latitude},${longitude}`;
+    },
   }
+}
 
 
 </script>

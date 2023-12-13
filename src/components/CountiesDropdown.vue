@@ -1,14 +1,10 @@
 <template>
 
+  <select class="form-select" aria-label="Maakond" v-bind="selectedCountyId" @change="emitChangedCountyId">
 
-
-
-  <select class="form-select" aria-label="Maakond">
-    <option v-if="countyDetail.countyId > 0" :key="countyDetail.countyId" :value="countyDetail.countyName"></option>
-
-    <option v-else selected value="0">Vali maakond</option>
-    <option v-for="county in counties" :key="county.countyId" :value="county.countyName">
-      {{county.countyName}}
+    <option disabled value="0">Vali maakond</option>
+    <option v-for="county in counties" :key="county.countyId" :selected="county.countyId===selectedCountyId">
+      {{ county.countyName }}
     </option>
 
   </select>
@@ -18,25 +14,15 @@
 <script>
 export default {
   name: 'CountiesDropdown',
-props:{
-  countyDetail: {
-    countyId: 0,
-    countyName:'',
-  }
-},
+  props: {
+    selectedCountyId: 0
+  },
   data () {
     return {
-      selectedCountyId: 0,
-      counties: [
-        {
-          countyId: 0,
-          countyName: ''
-        }
-      ]
+      counties: []
     }
+
   },
-
-
   methods: {
     getCounties () {
       this.$http.get("/location/counties")
@@ -48,11 +34,14 @@ props:{
           })
     },
 
+    emitChangedCountyId () {
+      this.$emit('event-selected-county-change', Number(this.selectedCountyId))
+    },
   },
+
 
   mounted () {
     this.getCounties()
   }
-
 }
 </script>
