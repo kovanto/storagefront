@@ -14,7 +14,8 @@
         <button v-if="!isEdit" @click="createNewUser" type="submit" class="btn btn-outline-dark">Registreeri uus
           kasutaja
         </button>
-        <button v-if="isEdit" @click="updateUserProfile" type="submit" class="btn btn-outline-dark">Uuenda andmeid</button>
+        <button v-if="isEdit" @click="updateUserProfile" type="submit" class="btn btn-outline-dark">Uuenda andmeid
+        </button>
       </div>
     </div>
   </div>
@@ -28,6 +29,7 @@ import PasswordInput from "@/components/UserProfile/PasswordInput.vue";
 import SuccessAlert from "@/components/alert/SuccessAlert.vue";
 import ErrorAlert from "@/components/alert/ErrorAlert.vue";
 import {useRoute} from "vue-router";
+import router from "@/router";
 
 export default {
   name: "ProfileView",
@@ -36,6 +38,7 @@ export default {
   data() {
     return {
       userId: 0,
+      roleName: '',
       isEdit: useRoute().query.isEdit,
       profileInfo: {
         roleId: 0,
@@ -49,7 +52,8 @@ export default {
       errorResponse: {
         message: '',
         errorCode: 0,
-      }
+      },
+
     }
   },
 
@@ -140,11 +144,13 @@ export default {
     updateUserProfile() {
       this.$http.put("/profile", this.profileInfo, {
             params: {
-              userId: this.userId,
+              userId: sessionStorage.getItem('userId')
             }
           }
       ).then(response => {
-        this.successMessage= 'Profiili ' + this.profileInfo.firstName + ' ' + this.profileInfo.lastName + ' andmed on edukalt muudetud'
+        this.successMessage = 'Profiili ' +
+            this.$refs.userNameAndEmailInputRef.firstName + ' ' + this.$refs.userNameAndEmailInputRef.lastName +
+            ' andmed on edukalt muudetud'
       }).catch(error => {
         const errorResponseBody = error.response.data
       })
@@ -154,11 +160,12 @@ export default {
       this.$refs.userNameAndEmailInputRef.firstName = this.profileInfo.firstName
       this.$refs.userNameAndEmailInputRef.lastName = this.profileInfo.lastName
       this.$refs.userNameAndEmailInputRef.email = this.profileInfo.email
-    }
+    },
 
   },
   mounted() {
     this.handleIsEdit()
+    this.resetErrorAlerts()
   }
 
 

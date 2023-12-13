@@ -11,7 +11,7 @@
         </div>
         <div class="modal-footer border-0">
           <button type="button" class="btn btn-outline-dark me-auto" @click="closeModal">Loobu</button>
-          <button type="button" class="btn btn-danger" @click="deleteStorage">Kustuta</button>
+          <button type="button" class="btn btn-outline-danger" @click="deleteStorage">Kustuta</button>
         </div>
       </div>
     </div>

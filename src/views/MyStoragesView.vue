@@ -21,7 +21,7 @@
                   class="btn btn-outline-dark mb-3">Muuda
           </button>
           <div class="row"></div>
-          <button @click="handleDeleteStorage(storageInfo)" type="submit" class="btn btn-danger">Kustuta
+          <button @click="handleDeleteStorage(storageInfo)" type="submit" class="btn btn-outline-danger">Kustuta
           </button>
         </div>
       </div>
