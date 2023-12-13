@@ -2,7 +2,7 @@
   <div class="container text-center">
     <SuccessAlert :success-message="successMessage"/>
     <ErrorAlert :error-message="errorMessage"/>
-    <div v-if="!isEdit">
+    <div v-if="isAddUser">
       <UserRoleSelection ref="userRoleSelectionRef"/>
     </div>
     <div>
@@ -11,10 +11,10 @@
     <PasswordInput ref="passwordInputRef"/>
     <div class="row justify-content-center">
       <div class="col col-6">
-        <button v-if="!isEdit" @click="createNewUser" type="submit" class="btn btn-outline-dark">Registreeri uus
+        <button v-if="isAddUser" @click="addNewUser" type="submit" class="btn btn-outline-dark">Registreeri uus
           kasutaja
         </button>
-        <button v-if="isEdit" @click="updateUserProfile" type="submit" class="btn btn-outline-dark">Uuenda andmeid
+        <button v-if="isUpdateUser" @click="updateUserProfile" type="submit" class="btn btn-outline-dark">Uuenda andmeid
         </button>
       </div>
     </div>
@@ -39,7 +39,8 @@ export default {
     return {
       userId: 0,
       roleName: '',
-      isEdit: useRoute().query.isEdit,
+      isUpdateUser: false,
+      isAddUser: true,
       profileInfo: {
         roleId: 0,
         firstName: '',
@@ -59,70 +60,11 @@ export default {
 
   methods: {
 
-    createNewUser() {
-      this.resetErrorAlerts();
-      this.getAndSetUserInfo();
-      if (this.checkRequiredFieldsAreFilled()) {
-        this.validatePasswordMatch();
-      } else {
-        this.handleRequiredFieldsError();
-      }
-    },
 
-    getAndSetUserInfo() {
-      this.profileInfo.roleId = this.$refs.userRoleSelectionRef.roleId
-      this.profileInfo.firstName = this.$refs.userNameAndEmailInputRef.firstName
-      this.profileInfo.lastName = this.$refs.userNameAndEmailInputRef.lastName
-      this.profileInfo.email = this.$refs.userNameAndEmailInputRef.email
-      this.profileInfo.password = this.$refs.passwordInputRef.password
-    },
-
-    validatePasswordMatch() {
-      if (this.$refs.passwordInputRef.password === this.$refs.passwordInputRef.passwordCheck) {
-        this.postNewUserInfo();
-      } else {
-        this.errorMessage = 'Paroolid ei tohi erineda'
-      }
-    },
-
-    postNewUserInfo() {
-      this.$http.post("/register", this.profileInfo
-      ).then(response => {
-        this.successMessage = 'Uus kasutaja "' + this.profileInfo.firstName + ' ' + this.profileInfo.lastName + '" on registreeritud!'
-      }).catch(error => {
-        this.errorResponse = error.response.data
-        this.handlePostNewUserError(error.response.status)
-      })
-    },
-
-    handlePostNewUserError(status) {
-      if (status === 403 && this.errorResponse.errorCode === 112) {
-        this.errorMessage = this.errorResponse.message;
-      } else {
-        router.push({name: 'errorRoute'});
-      }
-    },
-
-    checkRequiredFieldsAreFilled() {
-      return this.profileInfo.firstName.length > 0 &&
-          this.profileInfo.lastName.length > 0 &&
-          this.profileInfo.email.length > 0 &&
-          this.profileInfo.password.length > 0 &&
-          this.profileInfo.roleId > 1
-    },
-
-    handleRequiredFieldsError() {
-      this.errorMessage = 'Täida kõik väljad'
-    },
-
-    resetErrorAlerts() {
-      this.errorMessage = ''
-      this.successMessage = ''
-    },
-
-    handleIsEdit() {
-      if (this.isEdit === 'true') {
-        this.isEdit = true;
+    handleIsAddOrUpdateUser() {
+      if (useRoute().query.isEdit === 'true') {
+        this.isAddUser = false
+        this.isUpdateUser = true;
         this.getProfileInfo()
       }
     },
@@ -141,7 +83,42 @@ export default {
       })
     },
 
+
+    fillAllFieldsFromProfileInfo() {
+      this.$refs.userNameAndEmailInputRef.firstName = this.profileInfo.firstName
+      this.$refs.userNameAndEmailInputRef.lastName = this.profileInfo.lastName
+      this.$refs.userNameAndEmailInputRef.email = this.profileInfo.email
+    },
+
+
+    addNewUser() {
+      this.resetErrorAlerts();
+      this.getAndSetProfileInfo();
+
+      if (!this.profileInfoIsFilledAsRequired()) {
+        this.handleRequiredFieldsError();
+      } else if (!this.passwordFieldsMatch()) {
+        this.handlePasswordMismatchError();
+      } else {
+        this.postNewProfileInfo()
+      }
+    },
+
     updateUserProfile() {
+      this.resetErrorAlerts();
+      this.getAndSetProfileInfo();
+
+      if (!this.profileInfoIsFilledAsRequired()) {
+        this.handleRequiredFieldsError();
+      } else if (!this.passwordFieldsMatch()) {
+        this.handlePasswordMismatchError();
+      } else {
+        this.putNewProfileInfo();
+      }
+    },
+
+
+    putNewProfileInfo() {
       this.$http.put("/profile", this.profileInfo, {
             params: {
               userId: sessionStorage.getItem('userId')
@@ -156,15 +133,63 @@ export default {
       })
     },
 
-    fillAllFieldsFromProfileInfo() {
-      this.$refs.userNameAndEmailInputRef.firstName = this.profileInfo.firstName
-      this.$refs.userNameAndEmailInputRef.lastName = this.profileInfo.lastName
-      this.$refs.userNameAndEmailInputRef.email = this.profileInfo.email
+    resetErrorAlerts() {
+      this.errorMessage = ''
+      this.successMessage = ''
+    },
+
+
+    getAndSetProfileInfo() {
+      if (this.isAddUser) {
+        this.profileInfo.roleId = this.$refs.userRoleSelectionRef.roleId;
+      }
+      this.profileInfo.firstName = this.$refs.userNameAndEmailInputRef.firstName
+      this.profileInfo.lastName = this.$refs.userNameAndEmailInputRef.lastName
+      this.profileInfo.email = this.$refs.userNameAndEmailInputRef.email
+      this.profileInfo.password = this.$refs.passwordInputRef.password
+    },
+
+    profileInfoIsFilledAsRequired() {
+      return this.profileInfo.firstName.length > 0 &&
+          this.profileInfo.lastName.length > 0 &&
+          this.profileInfo.email.length > 0 &&
+          this.profileInfo.password.length > 0 &&
+          this.profileInfo.roleId > 1
+    },
+
+    handleRequiredFieldsError() {
+      this.errorMessage = 'Täida kõik väljad'
+    },
+
+    passwordFieldsMatch() {
+      return this.$refs.passwordInputRef.password === this.$refs.passwordInputRef.passwordCheck
+    },
+
+    handlePasswordMismatchError: function () {
+      this.errorMessage = 'Paroolid ei tohi erineda'
+    },
+
+    postNewProfileInfo() {
+      this.$http.post("/register", this.profileInfo
+      ).then(response => {
+        this.successMessage = 'Uus kasutaja "' + this.profileInfo.firstName + ' ' + this.profileInfo.lastName + '" on registreeritud!'
+      }).catch(error => {
+        this.errorResponse = error.response.data
+        this.handlePostNewUserError(error.response.status)
+      })
+    },
+
+    handlePostNewUserError(status) {
+      if (status === 403 && this.errorResponse.errorCode === 112) {
+        this.errorMessage = this.errorResponse.message;
+      } else {
+        router.push({name: 'errorRoute'});
+      }
     },
 
   },
   mounted() {
-    this.handleIsEdit()
+    this.handleIsAddOrUpdateUser()
     this.resetErrorAlerts()
   }
 

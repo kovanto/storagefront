@@ -8,21 +8,32 @@
       <div class="col col-6">
         <h3>{{ orderInfo.storageName }}</h3>
         {{ orderInfo.description }}
-        <br>
-        {{ orderInfo.storagePrice }} €/kuu
-        <div class="row"> Rendiperioodi algus {{orderInfo.startDate}}</div>
-        <div class="row"> Rendiperioodi lõpp {{orderInfo.endDate}}</div>
+        <div class="row">
+          <div class="col">
+            <div class="row justify-content-start">{{ orderInfo.storagePrice }} €/kuu</div>
+            <div class="row justify-content-start">[Kogumaksumus] €</div>
+          </div>
+          <div class="col me-3">
+          <div class="row justify-content-end"> Rendiperioodi algus {{ orderInfo.startDate }}</div>
+          <div class="row justify-content-end"> Rendiperioodi lõpp {{ orderInfo.endDate }}</div>
+          </div>
+        </div>
       </div>
-      <div class="col col-3">
-        <div class="row"></div>
-        <button type="submit" class="btn btn-outline-dark">Muuda
-        </button>
-        <div class="row"></div>
-        <button type="submit" class="btn btn-outline-danger">Tühista
-        </button>
+      <div class="col col-1">
+        <div class="row">
+        <button type="submit" class="btn btn-outline-dark">Muuda</button>
+        </div>
+        <div class="row">
+        <button type="submit" class="btn btn-outline-danger">Tühista</button>
+        </div>
+        <div class="form-floating mb-3">
+          <input readonly class="form-control-plaintext" disabled>
+          <label>{{ orderInfo.status }}</label>
+        </div>
       </div>
     </div>
-    <button @click="navigateToAllLocationsView" type="submit" class="btn btn-outline-dark float-end">Vaata pakkumisi</button>
+    <button @click="navigateToAllLocationsView" type="submit" class="btn btn-outline-dark float-end">Vaata pakkumisi
+    </button>
   </div>
 
 </template>
@@ -47,6 +58,7 @@ export default {
         orderId: 0,
         startDate: '',
         endDate: '',
+        status: ''
       }],
     }
 
