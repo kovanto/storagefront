@@ -62,6 +62,7 @@
 
 import StorageDetailsInfoTable from "@/components/StorageDetailsInfoTable.vue";
 import ImageInput from "@/components/ImageInput.vue";
+import router from "@/router";
 
 
 export default {
@@ -95,7 +96,8 @@ export default {
             featureName: '',
             isAvailable: true
           }
-        ]
+        ],
+        userId: '',
       },
 
       startDate: '',
@@ -106,57 +108,54 @@ export default {
 
   methods: {
 
-    getStorageDetails() {
-      this.$http.get('/storage', {
-            params: {
-              storageId: this.storageId
-            }
+    async getStorageDetails() {
+      try {
+        const response = await this.$http.get('/storage', {
+          params: {
+            storageId: this.storageId
           }
-      )
-          .then(response => {
-            this.storageDetails = response.data
-          }).catch(error => {
-        //router.push({name: 'errorRoute'})
-      })
+        });
 
+        this.storageDetails = response.data;
+        this.getAndSetIsSeller();
+        this.getAndSetEditable ();
+      } catch (error) {
+         await router.push({name: 'errorRoute'});
+      }
     },
-
     getAndSetIsLoggedIn () {
       const userId = sessionStorage.getItem('userId')
       this.isLoggedIn = userId !== null
     },
-
     getAndSetIsSeller () {
-      const roleName = sessionStorage.getItem('roleName')
-      this.isSeller = roleName === 'seller'
+      const userId = sessionStorage.getItem('userId')
+      this.isSeller = userId === this.storageDetails.userId;
     },
-
     getAndSetIsAdmin () {
       const roleName = sessionStorage.getItem('roleName')
       this.isAdmin = roleName === 'admin'
     },
-
     getAndSetEditable () {
       const roleName = sessionStorage.getItem('roleName')
-      this.isEditable = roleName === 'seller' || roleName === 'admin'
+      this.isEditable = (roleName === 'admin') || this.isSeller;
     },
 
-  handleCountyChange (countyId){
-    this.storageDetails.countyId = countyId;
-  },
-    handleLatitudeChange(latitude){
+    handleCountyChange (countyId) {
+      this.storageDetails.countyId = countyId;
+    },
+    handleLatitudeChange (latitude) {
       this.storageDetails.latitude = latitude;
     },
-    handleLongitudeChange(longitude){
+    handleLongitudeChange (longitude) {
       this.storageDetails.longitude = longitude;
     },
-  handleTypeChange(typeId){
-    this.storageDetails.typeId = typeId;
-  },
-    handleSquareMetersChange(squareMetes){
+    handleTypeChange (typeId) {
+      this.storageDetails.typeId = typeId;
+    },
+    handleSquareMetersChange (squareMetes) {
       this.storageDetails.squareMetes = squareMetes;
     },
-    handlePriceChange(price) {
+    handlePriceChange (price) {
       this.storageDetails.price = price;
     },
 
@@ -171,11 +170,12 @@ export default {
   },
 
   mounted () {
+    this.getStorageDetails()
     this.getAndSetIsLoggedIn()
     this.getAndSetIsSeller()
     this.getAndSetIsAdmin()
     this.getAndSetEditable()
-    this.getStorageDetails()
+
   },
 
 }
