@@ -14,8 +14,8 @@
 
     <div class="contents" v-for="storageInfo in storageInfos">
       <img @click="navigateToStorageDetailsView(storageInfo.storageId)" :src="storageInfo.imageData"
-           class="img-fluid img-thumbnail" width="400">
-      <div @click="navigateToStorageDetailsView(storageInfo.storageId)">{{ storageInfo.storageName }}</div>
+           class="img-fluid img-thumbnail" width="400" style="width: 100%; height: 100%; object-fit: cover;">
+      <div @click="navigateToStorageDetailsView(storageInfo.storageId)" class="text-uppercase" >{{ storageInfo.storageName }}</div>
       <div> {{ storageInfo.storagePrice + " €/kuu" }}</div>
     </div>
   </div>

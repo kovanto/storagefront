@@ -1,15 +1,15 @@
 <template>
   <div @keydown.enter="login">
-    <div class="container text-center" >
-      <div class="row justify-content-center">
+    <div class="container text-center">
+      <div class="row justify-content-center" >
         <div class="col col-6">
           <ErrorAlert :error-message="errorMessage"/>
         </div>
       </div>
     </div>
-    <div class="container text-center">
+    <div class="container text-center" style="padding: 100px">
       <div class="row justify-content-center">
-        <div class="col col-6">
+        <div class="col col-6 mb-5">
           <div class="input-group mb-3">
             <span class="input-group-text">E-maili aadress</span>
             <input v-model="email" type="text" class="form-control">

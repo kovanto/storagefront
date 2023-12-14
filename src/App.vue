@@ -1,12 +1,10 @@
 <template>
   <LogOutModal ref="logOutModalRef" @event-execute-logout="executeLogOut"/>
+  <div class="content">
   <MyStoragesView :user-id="userId"></MyStoragesView>
-  <div v-if="isLoggedIn" class="float-end" >
-    <router-link :to="{path: '/profile', query: {isEdit: true}}" style="font-size: small">
-      <font-awesome-icon :icon="['far', 'user']" /> Minu profiil</router-link>
-  </div>
+
   <nav>
-    <router-link to="/" class="me-3">Avaleht</router-link>
+    <router-link to="/" v-if="!isLoggedIn" class="me-3">Avaleht</router-link>
     <router-link to="/alllocations" class="me-3">Vaata pakkumisi</router-link>
     <router-link v-if="isLoggedIn&&isSeller" to="/mystorages" class="me-3">Minu laod</router-link>
     <router-link v-if="isLoggedIn&&!isSeller" to="/myorders" class="me-3">Minu broneeringud</router-link>
@@ -14,8 +12,13 @@
     <router-link v-if="!isLoggedIn" to="/login" class="me-3">Logi sisse</router-link>
     <a v-if="isLoggedIn" href="#" class="link-underline-opacity-100-hover cursor-pointer" @click="handleLogOut">Logi
       välja</a>
+    <div v-if="isLoggedIn" class="float-end" >
+      <router-link :to="{path: '/profile', query: {isEdit: true}}" style="font-size: small">
+        <font-awesome-icon :icon="['far', 'user']" /> Minu profiil</router-link>
+    </div>
   </nav>
   <router-view @event-update-nav-menu="updateNavMenu"/>
+  </div>
 </template>
 
 <script>
@@ -64,24 +67,78 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Lato', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #333333;
 }
 
 nav {
-  padding: 30px;
+  padding: 10px;
+  position: fixed;
+  width: 100%;
+  z-index: 1030;
+  top: 0;
+  backdrop-filter: blur(10px);
 }
 
 nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #444444;
 }
 
 nav a.router-link-exact-active {
-  color: #42b983;
+  color: #008080;
+}
+
+.content {
+  padding-top: 50px;
+  font-family: 'Lato', sans-serif;
+  background: linear-gradient(to bottom, #bfbfbf 5%, #d9d9d9 30%, #e6e6e6 50%, #f3f3f3 75%, #fffff0 100%);
+  color: #333333;
+
+}
+
+. {
+background-color: #008080;
+color: #fff;
+ }
+
+.modal .modal-content {
+  background-color: #f5f5f5;
+  color: #333333;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  width: 30%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+
+
+.modal .modal-footer .btn {
+  background-color: #008080;
+  color: #fff;
+}
+
+.modal-open .content {
+  filter: blur(100px);
+}
+
+#about {
+  font-family: 'Blinker', sans-serif;
+  font-size: 20px;
+  color: #000000;
+  backdrop-filter: blur(10px);
+  padding: 10px;
+
+}
+.home {
+  background-image: url('assets/happyfamily.jpeg');
+  background-size: cover;
+  background-position: center;
+  min-height: 93vh;
 }
 </style>
 

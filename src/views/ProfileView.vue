@@ -1,5 +1,5 @@
 <template>
-  <div class="container text-center">
+  <div class="container text-center" style="padding: 50px">
     <SuccessAlert :success-message="successMessage"/>
     <ErrorAlert :error-message="errorMessage"/>
     <div v-if="isAddUser">

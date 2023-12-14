@@ -2,7 +2,7 @@
   <div class="home">
     <div class="container text-center">
       <div class="row">
-        <div class="col col-4" ><i>
+        <div id="about" class="col col-4 mt-5" >
           SpaceLink on innovaatiline portaal, mis lihtsustab üüriprotsessi, ühendades kinnisvaraomanikud ja üürnikud.
           Platvorm pakub intuitiivset kasutajaliidest, arenenud otsingufunktsioone ja turvalisi suhtlusvahendeid. <br>
 
@@ -12,9 +12,8 @@
 
           SpaceLink kasutab andmete kaitseks ja teenuse sujuvuse tagamiseks kõrgtasemel tehnoloogiat ja krüpteerimist.
           Platvorm sobib nii ettevõtetele kui eraisikutele, kes soovivad rendipinda leida või pakkuda.
-        </i></div>
+        </div>
         <div class="col col-8">
-          <img src="../assets/happyfamily.jpeg" class="img-fluid" />
         </div>
       </div>
     </div>
