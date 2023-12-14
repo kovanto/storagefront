@@ -10,17 +10,20 @@
         <td v-else>{{ storageDetailsInfo.countyName }}</td>
       </tr>
       <tr>
-        <td >
-        <a :href="getMapLink(storageDetailsInfo.latitude, storageDetailsInfo.longitude)" target="_blank">Asukoht kaardil</a>
+        <td>
+          <a :href="getMapLink(storageDetailsInfo.latitude, storageDetailsInfo.longitude)" target="_blank">Asukoht
+            kaardil</a>
         </td>
 
         <td v-if="editable">
           <input class="form-control" type="text"
                  placeholder="latitude"
-                 v-model="storageDetailsInfo.latitude">
+                 v-model="storageDetailsInfo.latitude"
+                 @change-latitude="handleLatitudeChange">
           <input class="form-control" type="text"
                  placeholder="longitude"
-                 v-model="storageDetailsInfo.longitude">
+                 v-model="storageDetailsInfo.longitude"
+                 @change-longitude="handleLongitudeChange">
         </td>
         <td v-else>{{ storageDetailsInfo.latitude }} {{ storageDetailsInfo.longitude }}</td>
       </tr>
@@ -29,7 +32,8 @@
         <td v-if="editable">
           <input class="form-control" type="text"
                  placeholder="sisesta pindala"
-                 v-model="storageDetailsInfo.squareMeters">
+                 v-model="storageDetailsInfo.squareMeters"
+                 @change-squaremeters="handleSquareMetersChange">
         </td>
         <td v-else>{{ storageDetailsInfo.squareMeters }}</td>
       </tr>
@@ -62,7 +66,8 @@
         <td>Hind ühes kuus (€)</td>
         <td v-if="editable">
           <input v-model="storageDetailsInfo.price"
-                 class="form-control" type="text" placeholder="hind eurodes">'
+                 class="form-control" type="text" placeholder="hind eurodes"
+                 @change-price="handlePriceChange">
         </td>
         <td v-else>{{ storageDetailsInfo.price }}</td>
       </tr>
@@ -92,16 +97,32 @@ export default {
     }
   },
   methods: {
+    handleCountyChange (selectedCountyId) {
+      this.storageDetailedInfo.countyId = selectedCountyId;
+      this.$emit('event-selected-county-change', Number(this.storageDetailedInfo.countyId))
+    },
 
-    handleTypeChange (newTypeId) {
-      this.storageDetailedInfo.typeId = newTypeId;
-      //emit to StorageDetailsView
+    handleLatitudeChange () {
+      this.$emit('change-latitude', Number(this.storageDetailedInfo.latitude))
     },
-    handleCountyChange (newCountyId) {
-      this.storageDetailedInfo.countyId = newCountyId;
-  //emit to StorageDetailsView
+
+    handleLongitudeChange () {
+      this.$emit('change-longitude', Number(this.storageDetailedInfo.longitude))
     },
-    getMapLink(latitude, longitude) {
+
+    handleSquareMetersChange () {
+      this.$emit('change-squaremeters', Number(this.storageDetailedInfo.squareMeters))
+
+    },
+    handleTypeChange (selectedTypeId) {
+      this.storageDetailedInfo.typeId = selectedTypeId;
+      this.$emit('event-selected-type-change', Number(this.storageDetailedInfo.typeId))
+    },
+    handlePriceChange(){
+      this.$emit('change-price', Number(this.storageDetailedInfo.price))
+    },
+
+    getMapLink (latitude, longitude) {
 
       return `https://www.google.com/maps?q=${latitude},${longitude}`;
     },
