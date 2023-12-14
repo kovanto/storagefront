@@ -94,7 +94,8 @@ export default {
             featureName: 'string',
             isAvailable: true
           }
-        ]
+        ],
+        userId: 0,
       },
 
       startDate: '',
@@ -126,8 +127,13 @@ export default {
     },
 
     getAndSetIsSeller () {
-      const roleName = sessionStorage.getItem('roleName')
-      this.isSeller = roleName === 'seller'
+      //const roleName = sessionStorage.getItem('roleName')
+      //this.isSeller = roleName === 'seller'
+
+      const userId = sessionStorage.getItem('userId')
+
+      this.isSeller = userId === this.storageDetails.userId;
+
     },
 
     getAndSetIsAdmin () {
@@ -137,7 +143,7 @@ export default {
 
     getAndSetEditable () {
       const roleName = sessionStorage.getItem('roleName')
-      this.isEditable = roleName === 'seller' || roleName === 'admin'
+      this.isEditable = roleName === 'admin' || this.isSeller;
     },
 
   handleCountyChange (countyId){
@@ -164,11 +170,12 @@ export default {
     this.storageId = queryParams.get('storageId') || null;
   },
   mounted () {
+    this.getStorageDetails()
     this.getAndSetIsLoggedIn()
     this.getAndSetIsSeller()
     this.getAndSetIsAdmin()
     this.getAndSetEditable()
-    this.getStorageDetails()
+
   },
 
 }

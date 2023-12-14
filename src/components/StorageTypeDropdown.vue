@@ -12,7 +12,7 @@ export default {
   name: 'StorageTypeDropdown',
 
   props:{
-    selectedTypeId: 0
+    selectedTypeId: Number
   },
 
   data(){
