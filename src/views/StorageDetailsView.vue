@@ -18,9 +18,9 @@
       <div class="col col-5">
         <!--siia tuleb eraldi komponent "StorageImage.vue"-->
         <!--<img src="@\assets\img_placeholder.jpg" alt="image placeholder" class="img-thumbnail">-->
-        <img :src="storageDetails.imageData"  class="img-fluid img-thumbnail" width="600">
+        <img :src="storageDetails.imageData" class="img-fluid img-thumbnail" width="600">
         <div v-if="isEditable">
-          <ImageInput/>
+          <ImageInput @event-emit-base64="emitImageDataBase64"/>
         </div>
 
       </div>
@@ -69,7 +69,7 @@ export default {
   name: 'StorageDetailsView',
   components: {ImageInput, StorageDetailsInfoTable},
 
-  data () {
+  data() {
     return {
       isLoggedIn: false,
       isAdmin: false,
@@ -78,11 +78,11 @@ export default {
       storageId: 0,
       storageDetails: {
         storageName: '',
-        locationId:0,
+        locationId: 0,
         countyId: 0,
         countyName: '',
         typeId: 0,
-        typeName:'',
+        typeName: '',
         longitude: 0,
         latitude: 0,
         squareMeters: 0,
@@ -106,7 +106,7 @@ export default {
 
   methods: {
 
-    getStorageDetails () {
+    getStorageDetails() {
       this.$http.get('/storage', {
             params: {
               storageId: this.storageId
@@ -122,52 +122,57 @@ export default {
     },
 
 
-    getAndSetIsLoggedIn () {
+    getAndSetIsLoggedIn() {
       const userId = sessionStorage.getItem('userId')
       this.isLoggedIn = userId !== null
     },
 
-    getAndSetIsSeller () {
+    getAndSetIsSeller() {
       const roleName = sessionStorage.getItem('roleName')
       this.isSeller = roleName === 'seller'
     },
 
-    getAndSetIsAdmin () {
+    getAndSetIsAdmin() {
       const roleName = sessionStorage.getItem('roleName')
       this.isAdmin = roleName === 'admin'
     },
 
-    getAndSetEditable () {
+    getAndSetEditable() {
       const roleName = sessionStorage.getItem('roleName')
       this.isEditable = roleName === 'seller' || roleName === 'admin'
     },
 
 
-  created () {
-    const queryParams = new URLSearchParams(window.location.search);
-    this.storageId = queryParams.get('storageId') || null;
-  },
-  handleCountyChange (countyId){
-    this.storageDetails.countyId = countyId;
-  },
-    handleLatitudeChange(latitude){
+    created() {
+      const queryParams = new URLSearchParams(window.location.search);
+      this.storageId = queryParams.get('storageId') || null;
+    },
+    handleCountyChange(countyId) {
+      this.storageDetails.countyId = countyId;
+    },
+    handleLatitudeChange(latitude) {
       this.storageDetails.latitude = latitude;
     },
-    handleLongitudeChange(longitude){
+    handleLongitudeChange(longitude) {
       this.storageDetails.longitude = longitude;
     },
-  handleTypeChange(typeId){
-    this.storageDetails.typeId = typeId;
-  },
-    handleSquareMetersChange(squareMetes){
+    handleTypeChange(typeId) {
+      this.storageDetails.typeId = typeId;
+    },
+    handleSquareMetersChange(squareMetes) {
       this.storageDetails.squareMetes = squareMetes;
     },
-    handlePriceChange(price){
+    handlePriceChange(price) {
       this.storageDetails.price = price;
     },
+
+    emitImageDataBase64(imageData) {
+      this.$emit('event-emit-image-data', imageData)
+    },
+
   },
 
-  mounted () {
+  mounted() {
     this.getAndSetIsLoggedIn()
     this.getAndSetIsSeller()
     this.getAndSetIsAdmin()
