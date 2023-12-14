@@ -48,18 +48,13 @@
       <tr>
         <td>Lisad</td>
         <td v-if="editable">
-          <input class="form-check-input mx-2" type="checkbox">
-          <label class="form-check-label">valve</label>
-          <input class="form-check-input mx-2" type="checkbox">
-          <label class="form-check-label">küte</label>
-          <input class="form-check-input mx-2" type="checkbox">
-          <label class="form-check-label">elekter</label>
-        </td>
-        <td v-else>
-
           <FeatureTypesCheckbox/>
         </td>
 
+        <td v-else>
+          {{storageDetailsInfo.featureName}}
+
+        </td>
 
       </tr>
       <tr>
@@ -118,7 +113,7 @@ export default {
       this.storageDetailedInfo.typeId = selectedTypeId;
       this.$emit('event-selected-type-change', Number(this.storageDetailedInfo.typeId))
     },
-    handlePriceChange(){
+    handlePriceChange () {
       this.$emit('change-price', Number(this.storageDetailedInfo.price))
     },
 
