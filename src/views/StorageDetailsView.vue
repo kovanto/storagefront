@@ -15,9 +15,10 @@
     </div>
 
     <div class="row">
-      <div class="col col-3">
+      <div class="col col-5">
         <!--siia tuleb eraldi komponent "StorageImage.vue"-->
-        <img src="@\assets\img_placeholder.jpg" alt="image placeholder" class="img-thumbnail">
+        <!--<img src="@\assets\img_placeholder.jpg" alt="image placeholder" class="img-thumbnail">-->
+        <img :src="storageDetails.imageData"  class="img-fluid img-thumbnail" width="600">
         <div v-if="isEditable">
           <ImageInput/>
         </div>
@@ -80,11 +81,11 @@ export default {
         squareMeters: 0,
         price: 0,
         description: '',
-        imageData: 'string',
+        imageData: '',
         featureInfos: [
           {
             featureId: 0,
-            featureName: 'string',
+            featureName: '',
             isAvailable: true
           }
         ]
