@@ -18,11 +18,9 @@
         <div class="col col-3">
           <div class="row"></div>
           <button @click="navigateToStorageDetailsView(storageInfo.storageId)" type="submit"
-                  class="btn btn-outline-dark mb-3">Muuda
-          </button>
+                  class="btn btn-outline-dark mb-3">Muuda</button>
           <div class="row"></div>
-          <button @click="handleDeleteStorage(storageInfo)" type="submit" class="btn btn-outline-danger">Kustuta
-          </button>
+          <button @click="handleDeleteStorage(storageInfo)" type="submit" class="btn btn-outline-danger">Kustuta</button>
         </div>
       </div>
       <button @click="addNewStorage" type="submit" class="btn btn-outline-dark float-end">Lisa uus rendipind</button>
@@ -80,7 +78,7 @@ export default {
 
     handleStorageDeleted(message) {
       this.getUserStorages()
-      this.successMessage = message;
+      this.successMessage = message
     },
 
     navigateToStorageDetailsView(storageId) {
