@@ -61,6 +61,7 @@
 
 import StorageDetailsInfoTable from "@/components/StorageDetailsInfoTable.vue";
 import ImageInput from "@/components/ImageInput.vue";
+import router from "@/router";
 
 
 export default {
@@ -77,11 +78,11 @@ export default {
       storageId: 0,
       storageDetails: {
         storageName: '',
-        locationId:0,
+        locationId: 0,
         countyId: 0,
         countyName: '',
         typeId: 0,
-        typeName:'',
+        typeName: '',
         longitude: 0,
         latitude: 0,
         squareMeters: 0,
@@ -95,7 +96,7 @@ export default {
             isAvailable: true
           }
         ],
-        userId: 0,
+        userId: '',
       },
 
       startDate: '',
@@ -106,62 +107,54 @@ export default {
 
   methods: {
 
-    getStorageDetails () {
-      this.$http.get('/storage', {
-            params: {
-              storageId: this.storageId
-            }
+    async getStorageDetails() {
+      try {
+        const response = await this.$http.get('/storage', {
+          params: {
+            storageId: this.storageId
           }
-      )
-          .then(response => {
-            this.storageDetails = response.data
-          }).catch(error => {
-        //router.push({name: 'errorRoute'})
-      })
+        });
 
+        this.storageDetails = response.data;
+        this.getAndSetIsSeller();
+        this.getAndSetEditable ();
+      } catch (error) {
+         await router.push({name: 'errorRoute'});
+      }
     },
-
     getAndSetIsLoggedIn () {
       const userId = sessionStorage.getItem('userId')
       this.isLoggedIn = userId !== null
     },
-
     getAndSetIsSeller () {
-      //const roleName = sessionStorage.getItem('roleName')
-      //this.isSeller = roleName === 'seller'
-
       const userId = sessionStorage.getItem('userId')
-
       this.isSeller = userId === this.storageDetails.userId;
-
     },
-
     getAndSetIsAdmin () {
       const roleName = sessionStorage.getItem('roleName')
       this.isAdmin = roleName === 'admin'
     },
-
     getAndSetEditable () {
       const roleName = sessionStorage.getItem('roleName')
-      this.isEditable = roleName === 'admin' || this.isSeller;
+      this.isEditable = (roleName === 'admin') || this.isSeller;
     },
 
-  handleCountyChange (countyId){
-    this.storageDetails.countyId = countyId;
-  },
-    handleLatitudeChange(latitude){
+    handleCountyChange (countyId) {
+      this.storageDetails.countyId = countyId;
+    },
+    handleLatitudeChange (latitude) {
       this.storageDetails.latitude = latitude;
     },
-    handleLongitudeChange(longitude){
+    handleLongitudeChange (longitude) {
       this.storageDetails.longitude = longitude;
     },
-  handleTypeChange(typeId){
-    this.storageDetails.typeId = typeId;
-  },
-    handleSquareMetersChange(squareMetes){
+    handleTypeChange (typeId) {
+      this.storageDetails.typeId = typeId;
+    },
+    handleSquareMetersChange (squareMetes) {
       this.storageDetails.squareMetes = squareMetes;
     },
-    handlePriceChange(price){
+    handlePriceChange (price) {
       this.storageDetails.price = price;
     },
   },
