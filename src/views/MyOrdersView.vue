@@ -2,12 +2,11 @@
   <h1>Minu broneeringud</h1>
   <CancelOrderModal ref="cancelOrderModalRef" :order-info="orderInfo"
                     @event-order-successfully-cancelled = "handleOrderCancelled"/>
-  <ChangeOrderModal ref="changeOrderModalRef" :order-info="orderInfo"/>
   <div class="container text-center">
     <SuccessAlert :success-message="successMessage" class="justify-content-center"/>
     <div class="row" v-for="orderInfo in orderInfos" :key="orderInfo.customerId">
       <div class="col col-3">
-        <img :src="orderInfo.imageData" class="img-fluid img-thumbnail" width="400">
+        <img @click="navigateToStorageDetailsView(orderInfo.storageId)" :src="orderInfo.imageData" class="img-fluid img-thumbnail" width="400">
       </div>
       <div class="col col-6">
         <h3>{{ orderInfo.storageName }}</h3>
@@ -24,15 +23,12 @@
         </div>
       </div>
       <div class="col col-1">
-        <div class="row">
-          <button v-if="orderInfo.status === 'Broneeritud'" @click="handleChangeOrder(orderInfo)" type="submit" class="btn btn-outline-dark">Muuda</button>
-        </div>
-        <div class="row">
-          <button v-if="orderInfo.status === 'Broneeritud'" @click="handleCancelOrder(orderInfo)" type="submit" class="btn btn-outline-danger">Tühista</button>
-        </div>
         <div class="form-floating mb-3">
           <input readonly class="form-control-plaintext" disabled>
           <label>{{ orderInfo.status }}</label>
+        </div>
+        <div class="row">
+          <button v-if="orderInfo.status === 'Broneeritud'" @click="handleCancelOrder(orderInfo)" type="submit" class="btn btn-outline-danger">Tühista</button>
         </div>
       </div>
     </div>
@@ -47,11 +43,10 @@
 import router from "@/router";
 import CancelOrderModal from "@/components/modal/CancelOrderModal.vue";
 import SuccessAlert from "@/components/alert/SuccessAlert.vue";
-import ChangeOrderModal from "@/components/modal/ChangeOrderModal.vue";
 
 export default {
   name: "MyOrders",
-  components: {ChangeOrderModal, SuccessAlert, CancelOrderModal},
+  components: {SuccessAlert, CancelOrderModal},
   data() {
     return {
       isBooked: false,
@@ -102,14 +97,13 @@ export default {
       this.$refs.cancelOrderModalRef.openModal()
     },
 
-    handleChangeOrder(orderInfo) {
-      this.orderInfo = orderInfo
-      this.$refs.changeOrderModalRef.openModal()
-    },
-
     handleOrderCancelled(message) {
       this.getCustomerOrders()
       this.successMessage = message
+    },
+
+    navigateToStorageDetailsView(storageId) {
+      router.push({name: 'storageDetailsRoute', query: {storageId: storageId}})
     },
 
   },

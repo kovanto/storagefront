@@ -11,7 +11,7 @@
     <PasswordInput ref="passwordInputRef"/>
     <div class="row justify-content-center">
       <div class="col col-6">
-        <button v-if="isAddUser" @click="addNewUser" type="submit" class="btn btn-outline-dark">Registreeri uus
+        <button v-if="isAddUser" @click="addNewUserAndLogIn" type="submit" class="btn btn-outline-dark">Registreeri uus
           kasutaja
         </button>
         <button v-if="isUpdateUser" @click="updateUserProfile" type="submit" class="btn btn-outline-dark">Uuenda andmeid
@@ -54,6 +54,10 @@ export default {
         message: '',
         errorCode: 0,
       },
+      loginResponse: {
+        userId: 0,
+        roleName: ''
+      }
 
     }
   },
@@ -91,7 +95,7 @@ export default {
     },
 
 
-    addNewUser() {
+    addNewUserAndLogIn() {
       this.resetErrorAlerts();
       this.getAndSetProfileInfo();
 
@@ -100,7 +104,7 @@ export default {
       } else if (!this.passwordFieldsMatch()) {
         this.handlePasswordMismatchError();
       } else {
-        this.postNewProfileInfo()
+        this.postNewProfileInfoAndLogin()
       }
     },
 
@@ -131,6 +135,29 @@ export default {
       }).catch(error => {
         const errorResponseBody = error.response.data
       })
+    },
+
+    sendLoginRequestAndLogin() {
+      this.$http.get("/login", {
+            params: {
+              email: this.profileInfo.email,
+              password: this.profileInfo.password
+            },
+          }
+      ).then(response => {
+        this.loginResponse = response.data
+        this.handleLogin();
+      }).catch(error => {
+            const errorResponseBody = error.response.data
+          }
+      )
+    },
+
+    handleLogin() {
+      sessionStorage.setItem('userId', this.loginResponse.userId)
+      sessionStorage.setItem('roleName', this.loginResponse.roleName)
+      this.$emit('event-update-nav-menu', Number(this.loginResponse.userId))
+      router.push({name: 'allLocationsRoute'});
     },
 
     resetErrorAlerts() {
@@ -169,10 +196,11 @@ export default {
       this.errorMessage = 'Paroolid ei tohi erineda'
     },
 
-    postNewProfileInfo() {
+    postNewProfileInfoAndLogin() {
       this.$http.post("/register", this.profileInfo
       ).then(response => {
-        this.successMessage = 'Uus kasutaja "' + this.profileInfo.firstName + ' ' + this.profileInfo.lastName + '" on registreeritud!'
+        this.successMessage = 'Uus kasutaja "' + this.profileInfo.firstName + ' ' + this.profileInfo.lastName + '" on registreeritud! '
+        setTimeout(() => {this.sendLoginRequestAndLogin();},3000)
       }).catch(error => {
         this.errorResponse = error.response.data
         this.handlePostNewUserError(error.response.status)
