@@ -2,7 +2,12 @@
 
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col col-8">
+      <div v-if="isEditable" class="col col-8">
+        <input class="form-control" type="text" v-model="storageDetails.storageName">
+        <br>
+        <br>
+      </div>
+      <div v-else class="col col-8">
         <h1>{{ storageDetails.storageName }}</h1>
         <br>
         <br>
@@ -13,19 +18,19 @@
       <div class="col col-3">
         <!--siia tuleb eraldi komponent "StorageImage.vue"-->
         <img src="@\assets\img_placeholder.jpg" alt="image placeholder" class="img-thumbnail">
-
         <div v-if="isEditable">
           <ImageInput/>
         </div>
 
       </div>
-
-      <StorageDetailsInfoTable :editable="isEditable"/>
-
+      <StorageDetailsInfoTable :editable="isEditable" :storage-details-info="storageDetails"/>
     </div>
     <br>
     <br>
-    <div class="row justify-content-center">
+    <div v-if="isEditable">
+      <input class="form-control" type="text" v-model="storageDetails.description">
+    </div>
+    <div v-else class="row justify-content-center">
       {{ storageDetails.description }}
     </div>
     <br>
@@ -62,11 +67,14 @@ export default {
       isAdmin: false,
       isSeller: false,
       isEditable: false,
-      storageId: null,
+      storageId: 0,
       storageDetails: {
-        countyId: 0,
-        typeId: 0,
         storageName: '',
+        locationId:0,
+        countyId: 0,
+        countyName: '',
+        typeId: 0,
+        typeName:'',
         longitude: 0,
         latitude: 0,
         squareMeters: 0,
@@ -120,12 +128,14 @@ export default {
       const roleName = sessionStorage.getItem('roleName')
       this.isAdmin = roleName === 'admin'
     },
+
     getAndSetEditable () {
       const roleName = sessionStorage.getItem('roleName')
       this.isEditable = roleName === 'seller' || roleName === 'admin'
     },
   },
-  created() {
+
+  created () {
     const queryParams = new URLSearchParams(window.location.search);
     this.storageId = queryParams.get('storageId') || null;
   },
@@ -139,6 +149,4 @@ export default {
   },
 
 }
-
-
 </script>
