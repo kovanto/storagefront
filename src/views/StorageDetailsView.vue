@@ -24,7 +24,14 @@
         </div>
 
       </div>
-      <StorageDetailsInfoTable :editable="isEditable" :storage-details-info="storageDetails"/>
+      <StorageDetailsInfoTable :editable="isEditable" :storageDetailsInfo="storageDetails"
+                               @event-selected-county-change="handleCountyChange"
+                               @change-latitude="handleLatitudeChange"
+                               @change-longitude="handleLongitudeChange"
+                               @event-selected-type-change="handleTypeChange"
+                               @change-squaremeters="handleSquareMetersChange"
+                               @change-price="handlePriceChange"
+      />
     </div>
     <br>
     <br>
@@ -134,11 +141,30 @@ export default {
       const roleName = sessionStorage.getItem('roleName')
       this.isEditable = roleName === 'seller' || roleName === 'admin'
     },
-  },
+
 
   created () {
     const queryParams = new URLSearchParams(window.location.search);
     this.storageId = queryParams.get('storageId') || null;
+  },
+  handleCountyChange (countyId){
+    this.storageDetails.countyId = countyId;
+  },
+    handleLatitudeChange(latitude){
+      this.storageDetails.latitude = latitude;
+    },
+    handleLongitudeChange(longitude){
+      this.storageDetails.longitude = longitude;
+    },
+  handleTypeChange(typeId){
+    this.storageDetails.typeId = typeId;
+  },
+    handleSquareMetersChange(squareMetes){
+      this.storageDetails.squareMetes = squareMetes;
+    },
+    handlePriceChange(price){
+      this.storageDetails.price = price;
+    },
   },
 
   mounted () {
