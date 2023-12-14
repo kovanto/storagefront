@@ -47,12 +47,15 @@
     <div>
       <a v-if="isEditable" class="btn btn-primary">Salvesta</a>
       <div v-else-if="isLoggedIn">
-        Algus: <input type="date" class="">
-        Lõpp: <input type="date" class="m-2">
-        <a class="btn btn-primary">Kontrolli saadavust</a>
+        <ErrorAlert :error-message="errorMessage"/>
+        Algus: <input v-model="startDate" type="date" class="">
+        Lõpp: <input v-model="endDate" type="date" class="m-2">
+        <button @click="checkAvailability(orderDetails)" class="btn btn-primary" type="submit">Broneeri asukoht
+        </button>
+        <BookingModal ref="bookingModalRef" :order-details="orderDetails"/>
       </div>
       <a v-else href="/login" class="btn btn-primary">Tellimiseks logi sisse</a>
-      <a href="/alllocations" class="btn btn-primary m-2">Loobu</a>
+      <a href="/alllocations" class="btn btn-primary m-2">Tagasi</a>
     </div>
   </div>
 
@@ -62,12 +65,14 @@
 
 import StorageDetailsInfoTable from "@/components/StorageDetailsInfoTable.vue";
 import ImageInput from "@/components/ImageInput.vue";
+import BookingModal from "@/components/modal/BookingModal.vue";
+import ErrorAlert from "@/components/alert/ErrorAlert.vue";
 
 
 export default {
 
   name: 'StorageDetailsView',
-  components: {ImageInput, StorageDetailsInfoTable},
+  components: {ErrorAlert, BookingModal, ImageInput, StorageDetailsInfoTable},
 
   data() {
     return {
@@ -95,11 +100,18 @@ export default {
             featureName: '',
             isAvailable: true
           }
-        ]
-      },
+        ]},
+        orderDetails: {
+          customerId: 0,
+          storageId: 0,
+          storageName: '',
+          startDate: '',
+          endDate: ''
 
+        },
       startDate: '',
       endDate: '',
+      errorMessage: ''
 
     }
   },
@@ -121,39 +133,39 @@ export default {
 
     },
 
-    getAndSetIsLoggedIn () {
+    getAndSetIsLoggedIn() {
       const userId = sessionStorage.getItem('userId')
       this.isLoggedIn = userId !== null
     },
 
-    getAndSetIsSeller () {
+    getAndSetIsSeller() {
       const roleName = sessionStorage.getItem('roleName')
       this.isSeller = roleName === 'seller'
     },
 
-    getAndSetIsAdmin () {
+    getAndSetIsAdmin() {
       const roleName = sessionStorage.getItem('roleName')
       this.isAdmin = roleName === 'admin'
     },
 
-    getAndSetEditable () {
+    getAndSetEditable() {
       const roleName = sessionStorage.getItem('roleName')
       this.isEditable = roleName === 'seller' || roleName === 'admin'
     },
 
-  handleCountyChange (countyId){
-    this.storageDetails.countyId = countyId;
-  },
-    handleLatitudeChange(latitude){
+    handleCountyChange(countyId) {
+      this.storageDetails.countyId = countyId;
+    },
+    handleLatitudeChange(latitude) {
       this.storageDetails.latitude = latitude;
     },
-    handleLongitudeChange(longitude){
+    handleLongitudeChange(longitude) {
       this.storageDetails.longitude = longitude;
     },
-  handleTypeChange(typeId){
-    this.storageDetails.typeId = typeId;
-  },
-    handleSquareMetersChange(squareMetes){
+    handleTypeChange(typeId) {
+      this.storageDetails.typeId = typeId;
+    },
+    handleSquareMetersChange(squareMetes) {
       this.storageDetails.squareMetes = squareMetes;
     },
     handlePriceChange(price) {
@@ -164,13 +176,28 @@ export default {
       this.$emit('event-emit-image-data', imageData)
     },
 
+    checkAvailability() {
+      this.getAndSetOrderDetails()
+
+      this.$refs.bookingModalRef.openModal(this.orderDetails)
+    },
+
+    getAndSetOrderDetails() {
+      this.storageId = this.orderDetails.storageId;
+      this.startDate = this.orderDetails.startDate;
+      this.endDate = this.orderDetails.endDate;
+      this.storageDetails.storageName = this.orderDetails.storageName;
+      this.storageDetails.customerId = Number(sessionStorage.getItem('userId'));
+    }
+
   },
-  created () {
+
+  created() {
     const queryParams = new URLSearchParams(window.location.search);
     this.storageId = queryParams.get('storageId') || null;
   },
 
-  mounted () {
+  mounted() {
     this.getAndSetIsLoggedIn()
     this.getAndSetIsSeller()
     this.getAndSetIsAdmin()

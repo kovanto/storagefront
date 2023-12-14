@@ -92,7 +92,7 @@ export default {
     },
 
     addNewStorage(userId) {
-      router.push({name: 'storageDetailsRoute', query: {userId: userId}})
+      router.push({name: 'storageDetailsRoute'})
     },
 
   },
