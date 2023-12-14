@@ -120,7 +120,6 @@ export default {
 
     },
 
-
     getAndSetIsLoggedIn () {
       const userId = sessionStorage.getItem('userId')
       this.isLoggedIn = userId !== null
@@ -141,11 +140,6 @@ export default {
       this.isEditable = roleName === 'seller' || roleName === 'admin'
     },
 
-
-  created () {
-    const queryParams = new URLSearchParams(window.location.search);
-    this.storageId = queryParams.get('storageId') || null;
-  },
   handleCountyChange (countyId){
     this.storageDetails.countyId = countyId;
   },
@@ -165,7 +159,10 @@ export default {
       this.storageDetails.price = price;
     },
   },
-
+  created () {
+    const queryParams = new URLSearchParams(window.location.search);
+    this.storageId = queryParams.get('storageId') || null;
+  },
   mounted () {
     this.getAndSetIsLoggedIn()
     this.getAndSetIsSeller()
