@@ -121,45 +121,39 @@ export default {
 
     },
 
-
-    getAndSetIsLoggedIn() {
+    getAndSetIsLoggedIn () {
       const userId = sessionStorage.getItem('userId')
       this.isLoggedIn = userId !== null
     },
 
-    getAndSetIsSeller() {
+    getAndSetIsSeller () {
       const roleName = sessionStorage.getItem('roleName')
       this.isSeller = roleName === 'seller'
     },
 
-    getAndSetIsAdmin() {
+    getAndSetIsAdmin () {
       const roleName = sessionStorage.getItem('roleName')
       this.isAdmin = roleName === 'admin'
     },
 
-    getAndSetEditable() {
+    getAndSetEditable () {
       const roleName = sessionStorage.getItem('roleName')
       this.isEditable = roleName === 'seller' || roleName === 'admin'
     },
 
-
-    created() {
-      const queryParams = new URLSearchParams(window.location.search);
-      this.storageId = queryParams.get('storageId') || null;
-    },
-    handleCountyChange(countyId) {
-      this.storageDetails.countyId = countyId;
-    },
-    handleLatitudeChange(latitude) {
+  handleCountyChange (countyId){
+    this.storageDetails.countyId = countyId;
+  },
+    handleLatitudeChange(latitude){
       this.storageDetails.latitude = latitude;
     },
-    handleLongitudeChange(longitude) {
+    handleLongitudeChange(longitude){
       this.storageDetails.longitude = longitude;
     },
-    handleTypeChange(typeId) {
-      this.storageDetails.typeId = typeId;
-    },
-    handleSquareMetersChange(squareMetes) {
+  handleTypeChange(typeId){
+    this.storageDetails.typeId = typeId;
+  },
+    handleSquareMetersChange(squareMetes){
       this.storageDetails.squareMetes = squareMetes;
     },
     handlePriceChange(price) {
@@ -171,8 +165,12 @@ export default {
     },
 
   },
+  created () {
+    const queryParams = new URLSearchParams(window.location.search);
+    this.storageId = queryParams.get('storageId') || null;
+  },
 
-  mounted() {
+  mounted () {
     this.getAndSetIsLoggedIn()
     this.getAndSetIsSeller()
     this.getAndSetIsAdmin()
