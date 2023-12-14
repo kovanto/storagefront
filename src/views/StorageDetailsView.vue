@@ -46,6 +46,7 @@
 
     <div>
       <a v-if="isEditable" class="btn btn-primary">Salvesta</a>
+
       <div v-else-if="isLoggedIn">
         <ErrorAlert :error-message="errorMessage"/>
         Algus: <input v-model="startDate" type="date" class="">

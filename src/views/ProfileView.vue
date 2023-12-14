@@ -220,8 +220,6 @@ export default {
     this.handleIsAddOrUpdateUser()
     this.resetErrorAlerts()
   }
-
-
 }
 </script>
 
