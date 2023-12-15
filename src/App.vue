@@ -95,7 +95,7 @@ nav a.router-link-exact-active {
 .content {
   padding-top: 50px;
   font-family: 'Lato', sans-serif;
-  background: linear-gradient(to bottom, #bfbfbf 5%, #d9d9d9 30%, #e6e6e6 50%, #f3f3f3 75%, #fffff0 100%);
+  background: linear-gradient(to bottom, #a6a6a6 0%, #bfbfbf 20%, #d9d9d9 45%, #e6e6e6 70%, #ffffff 100%);
   color: #333333;
 
 }
@@ -138,7 +138,17 @@ color: #fff;
   background-image: url('assets/happyfamily.jpeg');
   background-size: cover;
   background-position: center;
-  min-height: 93vh;
+  min-height: 95vh;
+}
+
+.custom-button {
+  /* Define your preferred button styles */
+  padding: 10px 20px;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Adding transition for smooth color change */
 }
 </style>
 

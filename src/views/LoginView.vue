@@ -18,7 +18,7 @@
             <span class="input-group-text">parool</span>
             <input v-model="password" type="password" class="form-control">
           </div>
-          <button @click="login" type="submit" class="btn btn-outline-dark">Logi sisse</button>
+          <button @click="login" type="submit" class="btn btn-outline-dark"  style="background-color:#008080; color:#fff">Logi sisse</button>
         </div>
 
       </div>

@@ -11,10 +11,10 @@
     <PasswordInput ref="passwordInputRef"/>
     <div class="row justify-content-center">
       <div class="col col-6">
-        <button v-if="isAddUser" @click="addNewUserAndLogIn" type="submit" class="btn btn-outline-dark">Registreeri uus
+        <button v-if="isAddUser" @click="addNewUserAndLogIn" type="submit" class="btn btn-outline-dark"  style="background-color:#008080; color:#fff">Registreeri uus
           kasutaja
         </button>
-        <button v-if="isUpdateUser" @click="updateUserProfile" type="submit" class="btn btn-outline-dark">Uuenda andmeid
+        <button v-if="isUpdateUser" @click="updateUserProfile" type="submit" class="btn btn-outline-dark"  style="background-color:#008080; color:#fff">Uuenda andmeid
         </button>
       </div>
     </div>

@@ -11,8 +11,8 @@
           <h4>Kas oled kindel, et soovid asukoha "{{ orderInfo.storageName }}" broneeringu tühistada?</h4>
         </div>
         <div class="modal-footer border-0">
-          <button type="button" class="btn btn-outline-dark me-auto" @click="closeModal">Loobu</button>
-          <button type="button" class="btn btn-outline-danger" @click="cancelOrder">Tühista broneering</button>
+          <button type="button" class="btn btn-outline-dark me-auto" @click="closeModal"  style="background-color:#008080; color:#fff">Loobu</button>
+          <button type="button" class="btn btn-outline-danger" @click="cancelOrder"  style="background-color:#008080; color:#fff">Tühista broneering</button>
         </div>
       </div>
     </div>

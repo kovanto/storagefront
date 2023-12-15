@@ -14,7 +14,6 @@
         <div class="row">
           <div class="col">
             <div class="row justify-content-start">{{ orderInfo.storagePrice }} €/kuu</div>
-            <div class="row justify-content-start">[Kogumaksumus] €</div>
           </div>
           <div class="col me-3">
             <div class="row justify-content-end"> Rendiperioodi algus {{ orderInfo.startDate }}</div>
@@ -28,11 +27,11 @@
           <label>{{ orderInfo.status }}</label>
         </div>
         <div class="row">
-          <button v-if="orderInfo.status === 'Broneeritud'" @click="handleCancelOrder(orderInfo)" type="submit" class="btn btn-outline-danger">Tühista</button>
+          <button v-if="orderInfo.status === 'Broneeritud'" @click="handleCancelOrder(orderInfo)" type="submit" class="btn btn-outline-danger" style="background-color:#008080; color:#fff" >Tühista</button>
         </div>
       </div>
     </div>
-    <button @click="navigateToAllLocationsView" type="submit" class="btn btn-outline-dark float-end">Vaata pakkumisi
+    <button @click="navigateToAllLocationsView" type="submit" class="btn btn-outline-dark float-end" style="background-color:#008080; color:#fff">Vaata pakkumisi
     </button>
   </div>
 

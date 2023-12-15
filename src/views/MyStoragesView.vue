@@ -12,18 +12,19 @@
         <div class="col col-6">
           <h3>{{ storageInfo.storageName }}</h3>
           {{ storageInfo.description }}
-          <br>
+          <div class="row justify-content-end mt-3">
           {{ storageInfo.storagePrice }} €/kuu
+          </div>
         </div>
         <div class="col col-3">
           <div class="row"></div>
           <button @click="navigateToStorageDetailsView(storageInfo.storageId)" type="submit"
-                  class="btn btn-outline-dark mb-3">Muuda</button>
+                  class="btn btn-outline-dark mb-3" style="background-color:#008080; color:#fff">Muuda</button>
           <div class="row"></div>
-          <button @click="handleDeleteStorage(storageInfo)" type="submit" class="btn btn-outline-danger">Kustuta</button>
+          <button @click="handleDeleteStorage(storageInfo)" type="submit" class="btn btn-outline-danger" style="background-color:#008080; color:#fff">Kustuta</button>
         </div>
       </div>
-      <button @click="addNewStorage" type="submit" class="btn btn-outline-dark float-end">Lisa uus rendipind</button>
+      <button @click="addNewStorage" type="submit" class="btn btn-outline-dark float-end" style="background-color:#008080; color:#fff">Lisa uus rendipind</button>
     </div>
   </div>
 
@@ -57,7 +58,10 @@ export default {
             storageId: 0,
             storageName: '',
           },
-      successMessage: ''
+      successMessage: '',
+      hover: false,
+      baseColor: '#008080',
+      hoverColor: '#00cccc'
     }
   },
 

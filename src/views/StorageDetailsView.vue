@@ -45,17 +45,17 @@
     <br>
 
     <div>
-      <a v-if="isEditable" class="btn btn-primary">Salvesta</a>
+      <a v-if="isEditable" class="btn btn-primary" style="background-color:#008080; color:#fff">Salvesta</a>
       <div v-else-if="isLoggedIn">
         <ErrorAlert :error-message="errorMessage"/>
         Algus: <input v-model="startDate" type="date" class="">
         Lõpp: <input v-model="endDate" type="date" class="m-2">
-        <button @click="initiateBooking(startDate, endDate)" class="btn btn-primary" type="submit">Broneeri asukoht
+        <button @click="initiateBooking(startDate, endDate)" class="btn btn-primary" type="submit"  style="background-color:#008080; color:#fff">Broneeri asukoht
         </button>
         <BookingModal ref="bookingModalRef" :order-details="orderDetails"/>
       </div>
-      <a v-else href="/login" class="btn btn-primary">Tellimiseks logi sisse</a>
-      <a href="/alllocations" class="btn btn-primary m-2">Tagasi</a>
+      <a v-else href="/login" class="btn btn-primary"  style="background-color:#008080; color:#fff">Tellimiseks logi sisse</a>
+      <a href="/alllocations" class="btn btn-primary m-2"  style="background-color:#008080; color:#fff">Tagasi</a>
     </div>
   </div>
 

@@ -6,7 +6,6 @@
     <div class="container text-center">
       <div class="row mt-3 mb-5 class= text-end">
         <div class="col">
-          <font-awesome-icon :icon="['fas', 'arrow-up-short-wide']" class="me-3"/>
           <font-awesome-icon :icon="['fas', 'filter']" @click="openFilterModal"/>
         </div>
       </div>

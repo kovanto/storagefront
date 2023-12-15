@@ -11,8 +11,8 @@
           <h4>Kas oled kindel, et soovid asukoha "{{ orderDetails.storageName }}" broneerida?</h4>
         </div>
         <div class="modal-footer border-0">
-          <button type="button" class="btn btn-outline-dark me-auto" @click="closeModal">Loobu</button>
-          <button type="button" class="btn btn-outline-danger" @click="postOrder(orderDetails)">Broneeri asukoht</button>
+          <button type="button" class="btn btn-outline-dark me-auto" @click="closeModal" style="background-color:#008080; color:#fff">Loobu</button>
+          <button type="button" class="btn btn-outline-danger"  style="background-color:#008080; color:#fff" @click="postOrder(orderDetails)">Broneeri asukoht</button>
         </div>
       </div>
     </div>
