@@ -51,7 +51,7 @@
         <ErrorAlert :error-message="errorMessage"/>
         Algus: <input v-model="startDate" type="date" class="">
         Lõpp: <input v-model="endDate" type="date" class="m-2">
-        <button @click="checkAvailability(orderDetails)" class="btn btn-primary" type="submit">Broneeri asukoht
+        <button @click="initiateBooking(startDate, endDate)" class="btn btn-primary" type="submit">Broneeri asukoht
         </button>
         <BookingModal ref="bookingModalRef" :order-details="orderDetails"/>
       </div>
@@ -69,6 +69,7 @@ import ImageInput from "@/components/ImageInput.vue";
 import router from "@/router";
 import BookingModal from "@/components/modal/BookingModal.vue";
 import ErrorAlert from "@/components/alert/ErrorAlert.vue";
+import {end} from "@popperjs/core";
 
 
 export default {
@@ -121,6 +122,9 @@ export default {
   },
 
   methods: {
+    end() {
+      return end
+    },
 
     async getStorageDetails() {
       try {
@@ -177,21 +181,27 @@ export default {
       this.$emit('event-emit-image-data', imageData)
     },
 
-    checkAvailability() {
-      this.getAndSetOrderDetails()
-
-      this.$refs.bookingModalRef.openModal(this.orderDetails)
+    initiateBooking(startDate, endDate) {
+      this.getAndSetOrderDetails(startDate, endDate)
+      this.validateBookingDatesAndOpenBookingModal()
     },
 
-    getAndSetOrderDetails() {
-      this.storageId = this.orderDetails.storageId;
-      this.startDate = this.orderDetails.startDate;
-      this.endDate = this.orderDetails.endDate;
-      this.storageDetails.storageName = this.orderDetails.storageName;
-      this.storageDetails.customerId = Number(sessionStorage.getItem('userId'));
-    }
+    getAndSetOrderDetails(startDate, endDate) {
+      this.orderDetails.storageId = this.storageId;
+      this.orderDetails.startDate = startDate
+      this.orderDetails.endDate = endDate;
+      this.orderDetails.storageName = this.storageDetails.storageName;
+      this.orderDetails.customerId = Number(sessionStorage.getItem('userId'));
+    },
 
-  },
+    validateBookingDatesAndOpenBookingModal() {
+        if (this.startDate && this.endDate) {
+          this.$refs.bookingModalRef.openModal(this.orderDetails)
+        } else {
+          this.errorMessage = 'Vali nii broneeringu alguse kui lõpu kuupäev'
+        }
+      }
+    },
 
   created() {
     const queryParams = new URLSearchParams(window.location.search);
@@ -206,6 +216,5 @@ export default {
     this.getAndSetEditable()
 
   },
-
 }
 </script>

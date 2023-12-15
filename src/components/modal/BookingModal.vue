@@ -12,7 +12,7 @@
         </div>
         <div class="modal-footer border-0">
           <button type="button" class="btn btn-outline-dark me-auto" @click="closeModal">Loobu</button>
-          <button type="button" class="btn btn-outline-danger" @click="submitOrder">Broneeri asukoht</button>
+          <button type="button" class="btn btn-outline-danger" @click="postOrder(orderDetails)">Broneeri asukoht</button>
         </div>
       </div>
     </div>
@@ -33,6 +33,17 @@ export default {
   },
 
   methods: {
+
+    postOrder(orderDetails) {
+      this.$http.post("/myorders", orderDetails
+      ).then(response => {
+        const responseBody = response.data
+        this.closeModal()
+      }).catch(error => {
+        const errorResponseBody = error.response.data
+      })
+    },
+
 
     closeModal() {
       this.isOpen = false
