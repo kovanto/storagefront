@@ -48,7 +48,7 @@
       <tr>
         <td>Lisad</td>
         <td v-if="editable">
-          <FeatureTypesCheckbox ref="FeatureTypesCheckboxRef"/>
+          <FeatureTypesCheckbox :featureInfos="storageDetailsInfo.featureInfos"/>
         </td>
 
 

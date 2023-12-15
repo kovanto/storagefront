@@ -16,7 +16,9 @@ import router from "@/router";
 
 export default {
   name: "FeatureTypesCheckbox",
-
+  props: {
+    featureInfos: []
+  },
 
   data () {
     return {
@@ -29,22 +31,22 @@ export default {
       ]
     }
   },
-  methods:{
-    getFeatureTypes() {
+  methods: {
+   getFeatures () {
       this.$http.get("/storage/features")
           .then(response => {
             this.featureTypes = response.data
+
           })
           .catch(error => {
-            router.push({name: 'errorRoute'})
+            //const errorResponseBody = error.response.data
           })
     },
 
 
-
   },
-  mounted(){
-    this.getFeatureTypes();
+  mounted () {
+    this.getFeatures()
 
   }
 }
