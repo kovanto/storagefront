@@ -48,12 +48,14 @@
       <tr>
         <td>Lisad</td>
         <td v-if="editable">
-          <FeatureTypesCheckbox/>
+          <FeatureTypesCheckbox :featureInfos="storageDetailsInfo.featureInfos"/>
         </td>
 
-        <td v-else>
-          {{storageDetailsInfo.featureName}}
 
+        <td v-else>
+          <div v-for="featureInfo in storageDetailsInfo.featureInfos" :key="featureInfo.featureId">
+            <div v-if="featureInfo.isAvailable"> {{ storageDetailsInfo.featureName }}</div>
+          </div>
         </td>
 
       </tr>
