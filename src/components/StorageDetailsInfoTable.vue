@@ -53,8 +53,9 @@
 
 
         <td v-else>
+
           <div v-for="featureInfo in storageDetailsInfo.featureInfos" :key="featureInfo.featureId">
-            <div v-if="featureInfo.isAvailable"> {{ storageDetailsInfo.featureName }}</div>
+            <div v-if="featureInfo.isAvailable"> {{featureInfo.featureName }} </div>
           </div>
         </td>
 

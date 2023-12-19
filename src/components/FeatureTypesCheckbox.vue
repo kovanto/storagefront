@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div v-for="featureType in featureTypes" :key="featureType.featureId"
+    <div v-for="featureInfo in featureInfos" :key="featureInfo.featureId"
          class="form-check text-start">
-      <input v-model="featureType.isAvailable" :id=" 'featureTypeId' + featureType.featureId"
+      <input v-model="featureInfo.isAvailable" :id=" 'featureInfoId' + featureInfo.featureId"
              class="form-check-input" type="checkbox">
-      <label class="form-check-label" :for=" 'featureTypeId' + featureType.featureId ">
-        {{ featureType.featureName }}
+      <label class="form-check-label" :for=" 'featureInfoId' + featureInfo.featureId ">
+        {{ featureInfo.featureName }}
       </label>
     </div>
   </div>
@@ -20,35 +20,7 @@ export default {
     featureInfos: []
   },
 
-  data () {
-    return {
-      featureTypes: [
-        {
-          featureId: 0,
-          featureName: '',
-          isAvailable: false
-        }
-      ]
-    }
-  },
-  methods: {
-   getFeatures () {
-      this.$http.get("/storage/features")
-          .then(response => {
-            this.featureTypes = response.data
 
-          })
-          .catch(error => {
-            //const errorResponseBody = error.response.data
-          })
-    },
-
-
-  },
-  mounted () {
-    this.getFeatures()
-
-  }
 }
 
 
